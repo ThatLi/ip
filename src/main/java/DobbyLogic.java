@@ -31,6 +31,11 @@ public final class DobbyLogic {
     public void listen(String input) {
         // Split input into array of words, removing all spaces
         String[] inputs = input.split("\\s+");
+        // whitespaces-only case
+        if (inputs.length == 0) {
+            print("> Dobby couldn't hear you. Dobby want you to speak louder!");
+            return;
+        }
         Command command = COMMANDS.get(inputs[0].toLowerCase(Locale.ROOT));
 
         if (command == null) {
