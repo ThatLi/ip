@@ -11,6 +11,7 @@ public class Dobby {
      */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        DobbyLogic dobby = new DobbyLogic();
         String line = DobbyUtil.LINE;
 
         // Initialize chatbot
@@ -21,11 +22,13 @@ public class Dobby {
         print(line);
 
         // Take user inputs
+        System.out.print("Tell Dobby: ");
         String input = scanner.nextLine(); // could throw exception
-        print(line);
-        while (!DobbyLogic.isBye(input)) {
-            print(input);
+        while (!dobby.isBye(input)) {
             print(line);
+            dobby.listen(input);
+            print(line);
+            System.out.print("Tell Dobby: ");
             input = scanner.nextLine();
         }
 
