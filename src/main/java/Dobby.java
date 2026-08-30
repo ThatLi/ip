@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * Starts the Dobby chatbot application.
  */
@@ -8,22 +10,25 @@ public class Dobby {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        String lines = "____________________________________________________________";
-        String banner = "       *       .       *       .       *       \n"
-                + "   .      ____        _     _              .   \n"
-                + "     *   |  _ \\  ___ | |__ | |__  _   _     * \n"
-                + "   .     | | | |/ _ \\| '_ \\| '_ \\| | | |   . \n"
-                + "     *   | |_| | (_) | |_) | |_) | |_| |     * \n"
-                + "   .     |____/ \\___/|_.__/|_.__/ \\__, |   . \n"
-                + "                                  |___/        \n"
-                + "       *       .       *       .       *       \n";
-        print(lines);
-        print(banner);
+        Scanner scanner = new Scanner(System.in);
+        String line = DobbyUtil.LINE;
+
+        print(line);
+        print(DobbyUtil.BANNER);
         print("Dobby says hi!");
         print("Dobby is ready to take orders.");
-        print(lines);
+        print(line);
         print("Dobby says goodbye to master!");
     }
+
+    // Class for Tasks:
+    // will be stored in java collection
+    // 2 states: done, not done
+    // stores String Description
+    // subtypes -> ToDos, Events, Deadlines
+    // -> each stores String task, + deadline date, + start & end date
+    // handle error
+    // can be deleted
 
     private static void print(String str) {
         System.out.println(str);
