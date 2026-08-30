@@ -10,7 +10,9 @@ import java.util.Map;
 public final class DobbyLogic {
     /** Initialize dictionary of commands */
     enum Command {
-        LIST
+        LIST,
+        MARK,
+        UNMARK
     }
     private static final Map<String, Command> COMMANDS = new HashMap<>();
     static {
@@ -41,6 +43,10 @@ public final class DobbyLogic {
             case LIST:
                 this.doList();
                 break;
+
+            case MARK, UNMARK:
+                this.doMark(inputs, command);
+                break;
         }
     }
 
@@ -60,6 +66,43 @@ public final class DobbyLogic {
             res.append(count).append(". ").append(t).append("\n");
         }
         print(res.toString());
+    }
+
+    /**
+     * Parse Mark & Unmark command, calls respective marking command
+     * @param inputs [MARK/ UNMARK, int index]
+     */
+    private void doMark(String[] inputs, Command command) {
+        // Check valid command arguments
+        if (inputs.length != 2) {
+            print("> Handle 0");
+            return;
+        }
+
+        // Check valid index
+        int i; // input task number have offset of +1, so -1 to get correct index
+        try {
+            i = Integer.parseInt(inputs[1]);
+        } catch (NumberFormatException e) {
+            print("> Handle 1");
+            return;
+        }
+        if (i > this.tasks.size()) {
+            print("> Handle 2");
+            return;
+        }
+
+        // Toggle done status
+        Task t = this.tasks.get(i - 1);
+        if (command == Command.MARK) {
+            t.markDone();
+            print("> Dobby will mark this as done!");
+            print("   " + t);
+        } else {
+            t.markNotDone();
+            print("> Dobby will mark this as not done!");
+            print("   " + t);
+        }
     }
 
     private void print(String str) {
