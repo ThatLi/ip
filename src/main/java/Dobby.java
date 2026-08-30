@@ -13,12 +13,26 @@ public class Dobby {
         Scanner scanner = new Scanner(System.in);
         String line = DobbyUtil.LINE;
 
+        // Initialize chatbot
         print(line);
         print(DobbyUtil.BANNER);
         print("Dobby says hi!");
         print("Dobby is ready to take orders.");
         print(line);
+
+        // Take user inputs
+        String input = scanner.nextLine(); // could throw exception
+        while (!DobbyUtil.isExit(input)) {
+            print(line);
+            print(input);
+            print(line);
+            input = scanner.nextLine();
+        }
+
+        // Exit chatbot
+        print(line);
         print("Dobby says goodbye to master!");
+        print(line);
     }
 
     // Class for Tasks:
@@ -31,6 +45,6 @@ public class Dobby {
     // can be deleted
 
     private static void print(String str) {
-        System.out.println(str);
+        DobbyUtil.print(str);
     }
 }
