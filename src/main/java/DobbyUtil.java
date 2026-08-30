@@ -2,6 +2,7 @@
  * Utility class for Dobby values and functions
  */
 public final class DobbyUtil {
+    /** Utility attributes */
     // Displays
     static final String LINE = "____________________________________________________________";
     static final String BANNER = "       *       .       *       .       *       \n"
@@ -14,10 +15,6 @@ public final class DobbyUtil {
             + "       *       .       *       .       *       \n";
 
     /** Utility methods */
-    public static boolean isExit(String input) {
-        return input.equals("bye");
-    }
-
     public static void print(String str) {
         System.out.println(str);
     }

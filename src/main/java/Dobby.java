@@ -22,8 +22,8 @@ public class Dobby {
 
         // Take user inputs
         String input = scanner.nextLine(); // could throw exception
-        while (!DobbyUtil.isExit(input)) {
-            print(line);
+        print(line);
+        while (!DobbyLogic.isBye(input)) {
             print(input);
             print(line);
             input = scanner.nextLine();
