@@ -33,7 +33,7 @@ public final class DobbyLogic {
 
         if (command == null) {
             this.tasks.add(new Task(input));
-            print("Dobby noted: " + input);
+            print("> Dobby noted: " + input);
             return;
         }
 
@@ -53,7 +53,7 @@ public final class DobbyLogic {
      */
     private void doList() {
         StringBuilder res = new StringBuilder();
-        res.append("Dobby show ").append(this.tasks.size()).append(" tasks:\n");
+        res.append("> Dobby show ").append(this.tasks.size()).append(" tasks:\n");
         int count = 0;
         for (Task t : this.tasks) {
             count++;

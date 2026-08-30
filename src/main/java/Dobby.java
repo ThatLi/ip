@@ -17,8 +17,8 @@ public class Dobby {
         // Initialize chatbot
         print(line);
         print(DobbyUtil.BANNER);
-        print("Dobby says hi!");
-        print("Dobby is ready to take orders.");
+        print("> Dobby says hi!");
+        print("> Dobby is ready to take orders.");
         print(line);
 
         // Take user inputs
@@ -34,7 +34,7 @@ public class Dobby {
 
         // Exit chatbot
         print(line);
-        print("Dobby says goodbye to master!");
+        print("> Dobby says goodbye to master!");
         print(line);
     }
 
