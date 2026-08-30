@@ -75,7 +75,7 @@ public final class DobbyLogic {
     private void doMark(String[] inputs, Command command) {
         // Check valid command arguments
         if (inputs.length != 2) {
-            print("> Handle 0");
+            print("> Dobby is confused. Dobby think you meant '" + inputs[0] + " <Task number>'");
             return;
         }
 
@@ -84,11 +84,11 @@ public final class DobbyLogic {
         try {
             i = Integer.parseInt(inputs[1]);
         } catch (NumberFormatException e) {
-            print("> Handle 1");
+            print("> Dobby is confused. Dobby expected a task number");
             return;
         }
-        if (i > this.tasks.size()) {
-            print("> Handle 2");
+        if (i > this.tasks.size() || i <= 0) {
+            print("> Dobby is confused. Dobby can't find task " + i);
             return;
         }
 
