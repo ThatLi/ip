@@ -2,7 +2,8 @@
  * General Task class to be stored in DobbyLogic.java
  */
 public class Task {
-    String description = "";
+    protected String description;
+    protected boolean isDone;
 
     /**
      * Initiate a task with its description
@@ -10,10 +11,19 @@ public class Task {
      */
     public Task(String str) {
         this.description = str;
+        this.isDone = false;
+    }
+
+    public void toggleDone() {
+        this.isDone = (!this.isDone);
+    }
+
+    public String getStatusIcon() {
+        return (this.isDone ? "X" : " ");
     }
 
     @Override
     public String toString() {
-        return this.description;
+        return "[" + this.getStatusIcon() + "] " + this.description;
     }
 }
