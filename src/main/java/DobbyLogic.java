@@ -8,8 +8,7 @@ public final class DobbyLogic {
     enum Command {
         LIST
     }
-    List<Task> tasks = new ArrayList<>();
-    int taskCount = 0;
+    private final List<Task> tasks = new ArrayList<>();
 
     public void listen(String input) {
         Command command;
@@ -18,7 +17,6 @@ public final class DobbyLogic {
             command = Command.valueOf(input.toUpperCase());
         } catch (IllegalArgumentException e) {
             this.tasks.add(new Task(input));
-            this.taskCount++;
             print("Dobby noted: " + input);
             return;
         }
@@ -32,7 +30,7 @@ public final class DobbyLogic {
     }
 
     public boolean isBye(String input) {
-        return input.equals("bye");
+        return input.equalsIgnoreCase("bye");
     }
 
     /**
@@ -40,7 +38,7 @@ public final class DobbyLogic {
      */
     private void doList() {
         StringBuilder res = new StringBuilder();
-        res.append("Dobby show " + Integer.toString(this.taskCount) + " tasks:\n");
+        res.append("Dobby show " + Integer.toString(this.tasks.size()) + " tasks:\n");
         int count = 0;
         for (Task t : this.tasks) {
             count++;
