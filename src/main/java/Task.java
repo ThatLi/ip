@@ -1,12 +1,19 @@
+/**
+ * General Task class to be stored in DobbyLogic.java
+ */
 public class Task {
-    String details = "";
+    String description = "";
 
+    /**
+     * Initiate a task with its description
+     * @param str Description
+     */
     public Task(String str) {
-        this.details = str;
+        this.description = str;
     }
 
     @Override
     public String toString() {
-        return this.details;
+        return this.description;
     }
 }
