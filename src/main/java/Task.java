@@ -14,8 +14,12 @@ public class Task {
         this.isDone = false;
     }
 
-    public void toggleDone() {
-        this.isDone = (!this.isDone);
+    public void markDone() {
+        this.isDone = true;
+    }
+
+    public void markNotDone() {
+        this.isDone = false;
     }
 
     public String getStatusIcon() {
