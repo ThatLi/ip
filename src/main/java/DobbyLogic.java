@@ -41,10 +41,11 @@ public final class DobbyLogic {
         Command command = COMMANDS.get(inputs[0].toLowerCase(Locale.ROOT));
 
 
-        // instantiate tasks
+        // Old way to instantiate tasks
         if (command == null) {
-            this.tasks.add(new Task(input));
-            print("> Dobby noted: " + input);
+//            this.tasks.add(new Task(input));
+//            print("> Dobby noted: " + input);
+            print(" > Dobby asks is this a Todo, Deadline, or Event?");
             return;
         }
 
@@ -189,16 +190,19 @@ public final class DobbyLogic {
 
     public void createToDo(String str) {
         this.tasks.add(new ToDo(str));
+        print("> Dobby noted a new Todo: " + str);
     }
 
     /** Adds a deadline with its due date/time. */
     public void createDeadline(String description, String by) {
         this.tasks.add(new Deadline(description, by));
+        print("> Dobby noted a new Deadline: " + description + " by " + by);
     }
 
     /** Adds an event with its start and end date/time. */
     public void createEvent(String description, String from, String to) {
         this.tasks.add(new Event(description, from, to));
+        print("> Dobby noted a new Todo: " + description + " from " + from + " to " + to);
     }
 
     private void print(String str) {
