@@ -12,7 +12,10 @@ public final class DobbyLogic {
     enum Command {
         LIST,
         MARK,
-        UNMARK
+        UNMARK,
+        TODO,
+        DEADLINE,
+        EVENT
     }
     private static final Map<String, Command> COMMANDS = new HashMap<>();
     static {
@@ -38,6 +41,8 @@ public final class DobbyLogic {
         }
         Command command = COMMANDS.get(inputs[0].toLowerCase(Locale.ROOT));
 
+
+        // instantiate tasks
         if (command == null) {
             this.tasks.add(new Task(input));
             print("> Dobby noted: " + input);
@@ -51,6 +56,10 @@ public final class DobbyLogic {
 
             case MARK, UNMARK:
                 this.doMark(inputs, command);
+                break;
+
+            case TODO, DEADLINE, EVENT:
+                this.createTask(inputs, command);
                 break;
         }
     }
@@ -108,6 +117,41 @@ public final class DobbyLogic {
             print("> Dobby will mark this as not done!");
             print("   " + t);
         }
+    }
+
+    public void createTask(String[] inputs, Command command) {
+        int len = inputs.length - 1;
+
+        // Take Strings from inputs[1:]
+        String[] descriptions = new String[len];
+        System.arraycopy(inputs, 1, descriptions, 0, len);
+        String description = String.join(" ", descriptions);
+
+        switch (command) {
+            case TODO:
+                this.createToDo(description);
+                break;
+
+            case DEADLINE:
+                this.createDeadline(description);
+                break;
+
+            case EVENT:
+                this.createEvent(description);
+                break;
+        }
+    }
+
+    public void createToDo(String str) {
+        this.tasks.add(new ToDo(str));
+    }
+
+    public void createDeadline(String str) {
+        this.tasks.add(new Deadline(str, ""));
+    }
+
+    public void createEvent(String str) {
+        this.tasks.add(new Event(str, "", ""));
     }
 
     private void print(String str) {
