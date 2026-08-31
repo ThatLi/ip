@@ -4,6 +4,7 @@
 public class Task {
     protected String description;
     protected boolean isDone;
+    protected String type = " ";
 
     /**
      * Initiate a task with its description
@@ -12,6 +13,16 @@ public class Task {
     public Task(String str) {
         this.description = str;
         this.isDone = false;
+    }
+
+    /**
+     * Initiate a task with description and task type
+     * @param str Description
+     * @param type Type of task
+     */
+    public Task(String str, String type) {
+        this(str);
+        this.type = type;
     }
 
     public void markDone() {
@@ -26,8 +37,14 @@ public class Task {
         return (this.isDone ? "X" : " ");
     }
 
+    public String getType() {
+        return this.type;
+    }
+
     @Override
     public String toString() {
-        return "[" + this.getStatusIcon() + "] " + this.description;
+        return DobbyUtil.encloseBracket(this.getType()) +
+                DobbyUtil.encloseBracket(this.getStatusIcon()) + " " +
+                this.description;
     }
 }
