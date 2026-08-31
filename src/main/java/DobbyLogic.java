@@ -202,7 +202,7 @@ public final class DobbyLogic {
     /** Adds an event with its start and end date/time. */
     public void createEvent(String description, String from, String to) {
         this.tasks.add(new Event(description, from, to));
-        print("> Dobby noted a new Todo: " + description + " from " + from + " to " + to);
+        print("> Dobby noted a new Event: " + description + " from " + from + " to " + to);
     }
 
     private void print(String str) {

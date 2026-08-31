@@ -30,7 +30,7 @@ ____________________________________________________________
    .      ____        _     _              .   
      *   |  _ \  ___ | |__ | |__  _   _     * 
    .     | | | |/ _ \| '_ \| '_ \| | | |   . 
-     *   | |_| | (_) | |_) | |_| | |_| |     * 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
    .     |____/ \___/|_.__/|_.__/ \__, |   . 
                                   |___/        
        *       .       *       .       *       
@@ -67,6 +67,64 @@ Tell Dobby: ____________________________________________________________
 1. [T][ ] read book
 2. [D][ ] return book (by: Sunday)
 3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+```
+
+## Reject malformed deadlines and events without adding tasks
+
+**Aim:** Confirm that malformed deadline and event commands are rejected while a valid todo remains the only task in the list.
+
+**Command:**
+```text
+javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+```
+
+**Input:**
+```text
+todo keep me
+deadline missing date
+list
+event workshop /from Monday /to
+list
+bye
+```
+
+**Expected output:**
+```text
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby noted a new Todo: keep me
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby is confused. Dobby think you meant 'deadline <description> /by <date/time>'
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 1 tasks:
+1. [T][ ] keep me
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby is confused. Dobby think you meant 'event <description> /from <date/time> /to <date/time>'
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 1 tasks:
+1. [T][ ] keep me
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
