@@ -18,4 +18,8 @@ public final class DobbyUtil {
     public static void print(String str) {
         System.out.println(str);
     }
+
+    public static String encloseBracket(String str) {
+        return "[" + str + "]";
+    }
 }
