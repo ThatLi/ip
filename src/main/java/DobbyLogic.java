@@ -87,7 +87,7 @@ public final class DobbyLogic {
      * @param inputs [MARK/ UNMARK, int index]
      */
     private void doMark(String[] inputs, Command command) {
-        // Check valid command arguments
+        // Check valid command arguments -- could be custom Exception?
         if (inputs.length != 2) {
             print("> Dobby is confused. Dobby think you meant '" + inputs[0] + " <Task number>'");
             return;

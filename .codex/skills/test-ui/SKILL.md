@@ -7,6 +7,10 @@ description: Run and verify planned console UI tests for this Java project using
 
 Use this skill for repeatable tests of the application's command-line interface. The source of truth is `test/ui-test-plan.md`; keep its test cases current when UI behavior changes.
 
+## After application code changes
+
+When application code has changed, first review `test/ui-test-plan.md`. Update it if the change affects observable console behavior, including valid commands, invalid-input handling, messages, or task state. Then run the complete plan before reporting the code change as complete. If any case fails, stop immediately and report the session record's actual and expected outputs.
+
 ## Test-plan format
 
 Each case is a level-two Markdown heading followed by all four fields below. Put commands, console input, and expected output in fenced `text` blocks. The `Command` must be a command that starts the program and reads the specified input from standard input.
