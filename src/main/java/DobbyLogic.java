@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.io.IOException;
@@ -28,7 +26,7 @@ public final class DobbyLogic {
     }
 
     /** Store tasks recorded since the start of program */
-    private final List<Task> tasks = new ArrayList<>();
+    private final TaskList tasks = new TaskList();
     /** Writes the current task list to the application's data file. */
     private final Storage storage = new Storage();
 
@@ -93,9 +91,9 @@ public final class DobbyLogic {
         StringBuilder res = new StringBuilder();
         res.append("> Dobby show ").append(this.tasks.size()).append(" tasks:\n");
         int count = 0;
-        for (Task t : this.tasks) {
+        for (int index = 0; index < this.tasks.size(); index++) {
             count++;
-            res.append(count).append(". ").append(t).append("\n");
+            res.append(count).append(". ").append(this.tasks.get(index)).append("\n");
         }
         print(res.toString());
     }
@@ -275,7 +273,7 @@ public final class DobbyLogic {
     /** Saves tasks and reports an error only if the file cannot be written. */
     private void saveTasks() {
         try {
-            storage.save(tasks);
+            storage.save(tasks.asList());
         } catch (IOException | SecurityException e) {
             print("> Dobby could not save the task list.");
         }
@@ -285,7 +283,9 @@ public final class DobbyLogic {
     private void loadTasks() {
         try {
             Storage.LoadResult loadResult = storage.load();
-            tasks.addAll(loadResult.getTasks());
+            for (Task task : loadResult.getTasks()) {
+                tasks.add(task);
+            }
             if (loadResult.getInvalidTaskCount() > 0) {
                 print("> Dobby skipped " + loadResult.getInvalidTaskCount() + " invalid saved task(s).");
             }
