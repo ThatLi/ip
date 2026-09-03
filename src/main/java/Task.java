@@ -65,7 +65,8 @@ public class Task {
         }
 
         Task task;
-        switch (fields[0]) {
+        try {
+            switch (fields[0]) {
         case "T":
             if (fields.length != 3) {
                 throw new IllegalArgumentException("Invalid saved todo: " + line);
@@ -76,16 +77,23 @@ public class Task {
             if (fields.length != 4 || fields[3].isBlank()) {
                 throw new IllegalArgumentException("Invalid saved deadline: " + line);
             }
-            task = new Deadline(fields[2], fields[3]);
+            DateTimeUtil.ParsedDateTime deadlineDateTime = DateTimeUtil.parse(fields[3]);
+            task = new Deadline(fields[2], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
             break;
         case "E":
             if (fields.length != 5 || fields[3].isBlank() || fields[4].isBlank()) {
                 throw new IllegalArgumentException("Invalid saved event: " + line);
             }
-            task = new Event(fields[2], fields[3], fields[4]);
+            DateTimeUtil.ParsedDateTime startDateTime = DateTimeUtil.parse(fields[3]);
+            DateTimeUtil.ParsedDateTime endDateTime = DateTimeUtil.parse(fields[4]);
+            task = new Event(fields[2], startDateTime.getValue(), startDateTime.hasTime(),
+                    endDateTime.getValue(), endDateTime.hasTime());
             break;
-        default:
-            throw new IllegalArgumentException("Unknown saved task type: " + fields[0]);
+            default:
+                throw new IllegalArgumentException("Unknown saved task type: " + fields[0]);
+            }
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid saved date: " + line, e);
         }
 
         if (fields[1].equals("1")) {

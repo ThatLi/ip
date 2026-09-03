@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 
 /**
  * Evaluate user input
@@ -204,8 +205,12 @@ public final class DobbyLogic {
             print("> Dobby is confused. Dobby think you meant 'deadline <description> /by <date/time>'");
             return;
         }
-        createDeadline(this.joinTokens(inputs, 1, byIndex),
-                this.joinTokens(inputs, byIndex + 1, inputs.length));
+        try {
+            DateTimeUtil.ParsedDateTime by = DateTimeUtil.parse(this.joinTokens(inputs, byIndex + 1, inputs.length));
+            createDeadline(this.joinTokens(inputs, 1, byIndex), by);
+        } catch (DateTimeParseException e) {
+            print("> Dobby needs a valid date: yyyy-MM-dd, optionally followed by HHmm.");
+        }
     }
 
     /** Creates an event after extracting its description, start time, and end time. */
@@ -218,8 +223,13 @@ public final class DobbyLogic {
                     + "'event <description> /from <date/time> /to <date/time>'");
             return;
         }
-        createEvent(this.joinTokens(inputs, 1, fromIndex), this.joinTokens(inputs, fromIndex + 1, toIndex),
-                this.joinTokens(inputs, toIndex + 1, inputs.length));
+        try {
+            DateTimeUtil.ParsedDateTime from = DateTimeUtil.parse(this.joinTokens(inputs, fromIndex + 1, toIndex));
+            DateTimeUtil.ParsedDateTime to = DateTimeUtil.parse(this.joinTokens(inputs, toIndex + 1, inputs.length));
+            createEvent(this.joinTokens(inputs, 1, fromIndex), from, to);
+        } catch (DateTimeParseException e) {
+            print("> Dobby needs valid dates: yyyy-MM-dd, optionally followed by HHmm.");
+        }
     }
 
     /** Returns the index of a marker, or -1 when it is absent. */
@@ -246,17 +256,20 @@ public final class DobbyLogic {
     }
 
     /** Adds a deadline with its due date/time. */
-    public void createDeadline(String description, String by) {
-        this.tasks.add(new Deadline(description, by));
+    public void createDeadline(String description, DateTimeUtil.ParsedDateTime by) {
+        this.tasks.add(new Deadline(description, by.getValue(), by.hasTime()));
         saveTasks();
-        print("> Dobby noted a new Deadline: " + description + " by " + by);
+        print("> Dobby noted a new Deadline: " + description + " by "
+                + DateTimeUtil.formatForDisplay(by.getValue(), by.hasTime()));
     }
 
     /** Adds an event with its start and end date/time. */
-    public void createEvent(String description, String from, String to) {
-        this.tasks.add(new Event(description, from, to));
+    public void createEvent(String description, DateTimeUtil.ParsedDateTime from, DateTimeUtil.ParsedDateTime to) {
+        this.tasks.add(new Event(description, from.getValue(), from.hasTime(), to.getValue(), to.hasTime()));
         saveTasks();
-        print("> Dobby noted a new Event: " + description + " from " + from + " to " + to);
+        print("> Dobby noted a new Event: " + description + " from "
+                + DateTimeUtil.formatForDisplay(from.getValue(), from.hasTime()) + " to "
+                + DateTimeUtil.formatForDisplay(to.getValue(), to.hasTime()));
     }
 
     /** Saves tasks and reports an error only if the file cannot be written. */

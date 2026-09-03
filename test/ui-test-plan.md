@@ -2,20 +2,20 @@
 
 These tests cover creating the three supported task types, listing tasks, marking and unmarking a task, and saving and loading task-list changes through `data/duke.txt`.
 
-## Create, list, mark, and unmark Level-5 tasks
+## Create, list, mark, and unmark dated tasks
 
-**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; that `list` displays them; and that `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/duke.txt` without changing the console output.
+**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; dates are reformatted for display; and `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/duke.txt` without changing the console output.
 
 **Command:**
 ```text
-if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
 ```text
 todo read book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2/12/2019 1800
+event project meeting /from 2019-12-03 0900 /to 2019-12-03 1100
 list
 mark 2
 unmark 2
@@ -42,31 +42,31 @@ Tell Dobby: ____________________________________________________________
 > Dobby noted a new Todo: read book
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
-> Dobby noted a new Deadline: return book by Sunday
+> Dobby noted a new Deadline: return book by Dec 02 2019, 18:00
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
-> Dobby noted a new Event: project meeting from Mon 2pm to 4pm
+> Dobby noted a new Event: project meeting from Dec 03 2019, 09:00 to Dec 03 2019, 11:00
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby show 3 tasks:
 1. [T][ ] read book
-2. [D][ ] return book (by: Sunday)
-3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+2. [D][ ] return book (by: Dec 02 2019, 18:00)
+3. [E][ ] project meeting (from: Dec 03 2019, 09:00 to: Dec 03 2019, 11:00)
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby will mark this as done!
-   [D][X] return book (by: Sunday)
+   [D][X] return book (by: Dec 02 2019, 18:00)
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby will mark this as not done!
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 02 2019, 18:00)
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby show 3 tasks:
 1. [T][ ] read book
-2. [D][ ] return book (by: Sunday)
-3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+2. [D][ ] return book (by: Dec 02 2019, 18:00)
+3. [E][ ] project meeting (from: Dec 03 2019, 09:00 to: Dec 03 2019, 11:00)
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
@@ -80,7 +80,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -115,13 +115,13 @@ Tell Dobby: ____________________________________________________________
 ____________________________________________________________
 ```
 
-## Reject malformed deadlines and events without adding tasks
+## Reject malformed task dates without adding tasks
 
-**Aim:** Confirm that malformed deadline and event commands are rejected while a valid todo remains the only task in the list.
+**Aim:** Confirm that missing markers and invalid calendar dates are rejected while a valid todo remains the only task in the list.
 
 **Command:**
 ```text
-if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -129,7 +129,7 @@ if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\mai
 todo keep me
 deadline missing date
 list
-event workshop /from Monday /to
+event workshop /from 2019-02-30 /to 2019-03-01
 list
 bye
 ```
@@ -161,7 +161,7 @@ Tell Dobby: ____________________________________________________________
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
-> Dobby is confused. Dobby think you meant 'event <description> /from <date/time> /to <date/time>'
+> Dobby needs valid dates: yyyy-MM-dd, optionally followed by HHmm.
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby show 1 tasks:
@@ -175,11 +175,11 @@ ____________________________________________________________
 
 ## Load saved tasks when Dobby starts
 
-**Aim:** Confirm that a saved todo, completed deadline, and event are restored and listed when Dobby starts.
+**Aim:** Confirm that a saved todo, completed deadline, and event with ISO dates are restored and reformatted when Dobby starts.
 
 **Command:**
 ```text
-(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| Sunday&echo E ^| 0 ^| project meeting ^| Mon 2pm ^| 4pm)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -206,8 +206,8 @@ ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby show 3 tasks:
 1. [T][ ] read book
-2. [D][X] return book (by: Sunday)
-3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+2. [D][X] return book (by: Dec 02 2019, 18:00)
+3. [E][ ] project meeting (from: Dec 03 2019, 09:00 to: Dec 03 2019, 11:00)
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
