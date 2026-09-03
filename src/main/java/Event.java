@@ -8,6 +8,12 @@ public class Event extends Task {
         this.to = to;
     }
 
+    /** Returns this event in the format used by the task data file. */
+    @Override
+    public String toFileString() {
+        return super.toFileString() + " | " + this.from + " | " + this.to;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " (from: " + from + " to: " + to + ")";

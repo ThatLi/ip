@@ -6,6 +6,12 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    /** Returns this deadline in the format used by the task data file. */
+    @Override
+    public String toFileString() {
+        return super.toFileString() + " | " + this.by;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " (by: " + by + ")";

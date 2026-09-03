@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.io.IOException;
 
 /**
  * Evaluate user input
@@ -27,6 +28,8 @@ public final class DobbyLogic {
 
     /** Store tasks recorded since the start of program */
     private final List<Task> tasks = new ArrayList<>();
+    /** Writes the current task list to the application's data file. */
+    private final Storage storage = new Storage();
 
     /**
      * Call appropriate methods or add task to input, depending on user command in input
@@ -115,10 +118,12 @@ public final class DobbyLogic {
         Task t = this.tasks.get(i - 1);
         if (command == Command.MARK) {
             t.markDone();
+            saveTasks();
             print("> Dobby will mark this as done!");
             print("   " + t);
         } else {
             t.markNotDone();
+            saveTasks();
             print("> Dobby will mark this as not done!");
             print("   " + t);
         }
@@ -148,6 +153,7 @@ public final class DobbyLogic {
         // Delete task
         Task t = this.tasks.get(i - 1);
         this.tasks.remove(i - 1);
+        saveTasks();
         print("> Dobby has removed this task. Now Dobby only see " + this.tasks.size() + " tasks!");
         print("  " + t);
     }
@@ -222,19 +228,31 @@ public final class DobbyLogic {
 
     public void createToDo(String str) {
         this.tasks.add(new ToDo(str));
+        saveTasks();
         print("> Dobby noted a new Todo: " + str);
     }
 
     /** Adds a deadline with its due date/time. */
     public void createDeadline(String description, String by) {
         this.tasks.add(new Deadline(description, by));
+        saveTasks();
         print("> Dobby noted a new Deadline: " + description + " by " + by);
     }
 
     /** Adds an event with its start and end date/time. */
     public void createEvent(String description, String from, String to) {
         this.tasks.add(new Event(description, from, to));
+        saveTasks();
         print("> Dobby noted a new Event: " + description + " from " + from + " to " + to);
+    }
+
+    /** Saves tasks and reports an error only if the file cannot be written. */
+    private void saveTasks() {
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            print("> Dobby could not save the task list.");
+        }
     }
 
     private void print(String str) {

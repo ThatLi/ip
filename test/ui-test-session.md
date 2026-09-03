@@ -1,12 +1,12 @@
 # UI test session
 
-## 1. Create, list, mark, and unmark Level-4 tasks — PASSED
+## 1. Create, list, mark, and unmark Level-5 tasks — PASSED
 
-**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; that `list` displays them; and that `mark` and `unmark` change a task's status.
+**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; that `list` displays them; and that `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/duke.txt` without changing the console output.
 
 **Command:**
 ```text
-javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Console input:**
@@ -130,7 +130,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Console input:**

@@ -1,14 +1,14 @@
-# Level-4 UI test plan
+# Level-5 UI test plan
 
-These tests cover creating the three supported task types, listing tasks, and marking and unmarking a task.
+These tests cover creating the three supported task types, listing tasks, marking and unmarking a task, and saving every task-list change to `data/duke.txt`.
 
-## Create, list, mark, and unmark Level-4 tasks
+## Create, list, mark, and unmark Level-5 tasks
 
-**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; that `list` displays them; and that `mark` and `unmark` change a task's status.
+**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; that `list` displays them; and that `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/duke.txt` without changing the console output.
 
 **Command:**
 ```text
-javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -80,7 +80,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**

@@ -41,6 +41,15 @@ public class Task {
         return this.type;
     }
 
+    /**
+     * Returns this task in the format used by the task data file.
+     *
+     * @return task type, status, and description separated by pipes
+     */
+    public String toFileString() {
+        return this.type + " | " + (this.isDone ? "1" : "0") + " | " + this.description;
+    }
+
     @Override
     public String toString() {
         return DobbyUtil.encloseBracket(this.getType()) +
