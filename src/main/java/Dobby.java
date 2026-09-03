@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 /**
  * Starts the Dobby chatbot application.
  */
@@ -10,37 +8,26 @@ public class Dobby {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         DobbyLogic dobby = new DobbyLogic();
-        String line = DobbyUtil.LINE;
+        Ui ui = new Ui();
 
         // Initialize chatbot
-        print(line);
-        print(DobbyUtil.BANNER);
-        print("> Dobby says hi!");
-        print("> Dobby is ready to take orders.");
-        print(line);
+        ui.showWelcome();
 
         // Take user inputs
-        System.out.print("Tell Dobby: ");
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
+        ui.showPrompt();
+        String input;
+        while ((input = ui.readCommand()) != null) {
             if (dobby.isBye(input)) {
                 break;
             }
-            print(line);
+            ui.showLine();
             dobby.listen(input);
-            print(line);
-            System.out.print("Tell Dobby: ");
+            ui.showLine();
+            ui.showPrompt();
         }
 
         // Exit chatbot
-        print(line);
-        print("> Dobby says goodbye to master!");
-        print(line);
-    }
-
-    private static void print(String str) {
-        DobbyUtil.print(str);
+        ui.showGoodbye();
     }
 }
