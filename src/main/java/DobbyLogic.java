@@ -109,24 +109,32 @@ public final class DobbyLogic {
             print("> Dobby is confused. Dobby expected a task number");
             return;
         }
-        if (i > this.tasks.size() || i <= 0) {
-            print("> Dobby is confused. Dobby can't find task " + i);
+        changeTaskStatus(i, command == CommandType.MARK);
+    }
+
+    /**
+     * Changes one task's completion status and reports the result.
+     *
+     * @param taskNumber one-based task number
+     * @param isDone whether the task should be complete
+     */
+    public void changeTaskStatus(int taskNumber, boolean isDone) {
+        if (taskNumber > this.tasks.size() || taskNumber <= 0) {
+            print("> Dobby is confused. Dobby can't find task " + taskNumber);
             return;
         }
 
-        // Toggle done status
-        Task t = this.tasks.get(i - 1);
-        if (command == CommandType.MARK) {
-            t.markDone();
+        Task task = this.tasks.get(taskNumber - 1);
+        if (isDone) {
+            task.markDone();
             saveTasks();
             print("> Dobby will mark this as done!");
-            print("   " + t);
         } else {
-            t.markNotDone();
+            task.markNotDone();
             saveTasks();
             print("> Dobby will mark this as not done!");
-            print("   " + t);
         }
+        print("   " + task);
     }
 
 

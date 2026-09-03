@@ -19,6 +19,20 @@ public final class Parser {
         if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         }
+        String[] tokens = input.trim().split("\\s+");
+        if (tokens.length == 2) {
+            try {
+                int taskNumber = Integer.parseInt(tokens[1]);
+                if (tokens[0].equalsIgnoreCase("mark")) {
+                    return new MarkCommand(taskNumber);
+                }
+                if (tokens[0].equalsIgnoreCase("unmark")) {
+                    return new UnmarkCommand(taskNumber);
+                }
+            } catch (NumberFormatException e) {
+                // DobbyLogic retains the established invalid-number response for now.
+            }
+        }
         return null;
     }
 }
