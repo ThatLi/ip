@@ -18,11 +18,16 @@ public class Dobby {
         ui.showPrompt();
         String input;
         while ((input = ui.readCommand()) != null) {
-            if (dobby.isBye(input)) {
+            Command command = Parser.parse(input);
+            if (command != null && command.isExit()) {
                 break;
             }
             ui.showLine();
-            dobby.listen(input);
+            if (command != null) {
+                command.execute(dobby);
+            } else {
+                dobby.listen(input);
+            }
             ui.showLine();
             ui.showPrompt();
         }

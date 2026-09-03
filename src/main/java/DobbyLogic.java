@@ -45,12 +45,6 @@ public final class DobbyLogic {
             print("> Dobby couldn't hear you. Dobby want you to speak louder!");
             return;
         }
-        Command parsedCommand = Parser.parse(input);
-        if (parsedCommand != null) {
-            parsedCommand.execute(this);
-            return;
-        }
-
         String[] inputs = input.trim().split("\\s+");
         CommandType command = COMMANDS.get(inputs[0].toLowerCase(Locale.ROOT));
 
@@ -80,10 +74,6 @@ public final class DobbyLogic {
                 this.doDelete(inputs, command);
                 break;
         }
-    }
-
-    public boolean isBye(String input) {
-        return input.equalsIgnoreCase("bye");
     }
 
     /**

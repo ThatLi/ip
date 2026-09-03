@@ -16,6 +16,9 @@ public final class Parser {
         if (input.trim().equalsIgnoreCase("list")) {
             return new ListCommand();
         }
+        if (input.equalsIgnoreCase("bye")) {
+            return new ExitCommand();
+        }
         return null;
     }
 }
