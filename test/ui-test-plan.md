@@ -8,7 +8,7 @@ These tests cover creating the three supported task types, listing tasks, markin
 
 **Command:**
 ```text
-if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\Parser.java src\main\java\Command.java src\main\java\ListCommand.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -80,7 +80,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\Parser.java src\main\java\Command.java src\main\java\ListCommand.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -121,7 +121,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\Parser.java src\main\java\Command.java src\main\java\ListCommand.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**
@@ -179,7 +179,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Ui.java src\main\java\Parser.java src\main\java\Command.java src\main\java\ListCommand.java src\main\java\DateTimeUtil.java src\main\java\Storage.java src\main\java\TaskList.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Input:**

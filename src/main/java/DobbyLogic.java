@@ -9,7 +9,7 @@ import java.time.format.DateTimeParseException;
  */
 public final class DobbyLogic {
     /** Initialize dictionary of commands */
-    enum Command {
+    enum CommandType {
         LIST,
         MARK,
         UNMARK,
@@ -18,9 +18,9 @@ public final class DobbyLogic {
         EVENT,
         DELETE
     }
-    private static final Map<String, Command> COMMANDS = new HashMap<>();
+    private static final Map<String, CommandType> COMMANDS = new HashMap<>();
     static {
-        for (Command command : Command.values()) {
+        for (CommandType command : CommandType.values()) {
             COMMANDS.put(command.name().toLowerCase(Locale.ROOT), command);
         }
     }
@@ -45,8 +45,14 @@ public final class DobbyLogic {
             print("> Dobby couldn't hear you. Dobby want you to speak louder!");
             return;
         }
+        Command parsedCommand = Parser.parse(input);
+        if (parsedCommand != null) {
+            parsedCommand.execute(this);
+            return;
+        }
+
         String[] inputs = input.trim().split("\\s+");
-        Command command = COMMANDS.get(inputs[0].toLowerCase(Locale.ROOT));
+        CommandType command = COMMANDS.get(inputs[0].toLowerCase(Locale.ROOT));
 
 
         // Old way to instantiate tasks
@@ -59,11 +65,7 @@ public final class DobbyLogic {
 
         switch (command) {
             case LIST:
-                if (inputs.length == 1) {
-                    this.doList();
-                } else {
-                    print("> Dobby is confused. Dobby think you meant 'list'");
-                }
+                print("> Dobby is confused. Dobby think you meant 'list'");
                 break;
 
             case MARK, UNMARK:
@@ -87,7 +89,7 @@ public final class DobbyLogic {
     /**
      * Print all tasks as numbered list
      */
-    private void doList() {
+    public void showTasks() {
         StringBuilder res = new StringBuilder();
         res.append("> Dobby show ").append(this.tasks.size()).append(" tasks:\n");
         int count = 0;
@@ -102,7 +104,7 @@ public final class DobbyLogic {
      * Parse Mark & Unmark command, calls respective marking command
      * @param inputs [MARK/ UNMARK, int index]
      */
-    private void doMark(String[] inputs, Command command) {
+    private void doMark(String[] inputs, CommandType command) {
         // Check valid command arguments -- could be custom Exception?
         if (inputs.length != 2) {
             print("> Dobby is confused. Dobby think you meant '" + inputs[0] + " <Task number>'");
@@ -124,7 +126,7 @@ public final class DobbyLogic {
 
         // Toggle done status
         Task t = this.tasks.get(i - 1);
-        if (command == Command.MARK) {
+        if (command == CommandType.MARK) {
             t.markDone();
             saveTasks();
             print("> Dobby will mark this as done!");
@@ -138,7 +140,7 @@ public final class DobbyLogic {
     }
 
 
-    private void doDelete(String[] inputs, Command command) {
+    private void doDelete(String[] inputs, CommandType command) {
         // Check valid command arguments -- could be custom Exception?
         if (inputs.length != 2) {
             print("> Dobby is confused. Dobby think you meant '" + inputs[0] + " <Task number>'");
@@ -172,7 +174,7 @@ public final class DobbyLogic {
      * @param inputs tokenized user input
      * @param command type of task to create
      */
-    public void createTask(String[] inputs, Command command) {
+    public void createTask(String[] inputs, CommandType command) {
         switch (command) {
             case TODO:
                 if (inputs.length == 1) {
