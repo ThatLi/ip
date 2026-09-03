@@ -50,6 +50,50 @@ public class Task {
         return this.type + " | " + (this.isDone ? "1" : "0") + " | " + this.description;
     }
 
+    /**
+     * Reconstructs a task from one line in the task data file.
+     *
+     * @param line saved task data
+     * @return the reconstructed task
+     * @throws IllegalArgumentException if the line does not match the save format
+     */
+    public static Task fromFileString(String line) {
+        String[] fields = line.split(" \\| ", -1);
+        if (fields.length < 3 || fields[2].isBlank()
+                || !(fields[1].equals("0") || fields[1].equals("1"))) {
+            throw new IllegalArgumentException("Invalid saved task: " + line);
+        }
+
+        Task task;
+        switch (fields[0]) {
+        case "T":
+            if (fields.length != 3) {
+                throw new IllegalArgumentException("Invalid saved todo: " + line);
+            }
+            task = new ToDo(fields[2]);
+            break;
+        case "D":
+            if (fields.length != 4 || fields[3].isBlank()) {
+                throw new IllegalArgumentException("Invalid saved deadline: " + line);
+            }
+            task = new Deadline(fields[2], fields[3]);
+            break;
+        case "E":
+            if (fields.length != 5 || fields[3].isBlank() || fields[4].isBlank()) {
+                throw new IllegalArgumentException("Invalid saved event: " + line);
+            }
+            task = new Event(fields[2], fields[3], fields[4]);
+            break;
+        default:
+            throw new IllegalArgumentException("Unknown saved task type: " + fields[0]);
+        }
+
+        if (fields[1].equals("1")) {
+            task.markDone();
+        }
+        return task;
+    }
+
     @Override
     public String toString() {
         return DobbyUtil.encloseBracket(this.getType()) +

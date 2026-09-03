@@ -6,7 +6,7 @@
 
 **Command:**
 ```text
-javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Console input:**
@@ -124,13 +124,81 @@ ____________________________________________________________
 
 ```
 
-## 2. Reject malformed deadlines and events without adding tasks — PASSED
+## 2. Skip invalid saved tasks without losing valid tasks — PASSED
+
+**Aim:** Confirm that an invalid saved record is reported and ignored while valid saved tasks still load.
+
+**Command:**
+```text
+(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+```
+
+**Console input:**
+```text
+list
+bye
+```
+
+**Expected output:**
+```text
+> Dobby skipped 1 invalid saved task(s).
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 1 tasks:
+1. [T][ ] recovered task
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+```
+
+**Actual output:**
+```text
+> Dobby skipped 1 invalid saved task(s).
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 1 tasks:
+1. [T][ ] recovered task
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+
+```
+
+## 3. Reject malformed deadlines and events without adding tasks — PASSED
 
 **Aim:** Confirm that malformed deadline and event commands are rejected while a valid todo remains the only task in the list.
 
 **Command:**
 ```text
-javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+if exist data\duke.txt del /q data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
 ```
 
 **Console input:**
@@ -214,6 +282,76 @@ ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby show 1 tasks:
 1. [T][ ] keep me
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+
+```
+
+## 4. Load saved tasks when Dobby starts — PASSED
+
+**Aim:** Confirm that a saved todo, completed deadline, and event are restored and listed when Dobby starts.
+
+**Command:**
+```text
+(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| Sunday&echo E ^| 0 ^| project meeting ^| Mon 2pm ^| 4pm)>data\duke.txt & javac -d out\production\ip src\main\java\Dobby.java src\main\java\DobbyLogic.java src\main\java\DobbyUtil.java src\main\java\Storage.java src\main\java\Task.java src\main\java\ToDo.java src\main\java\Deadline.java src\main\java\Event.java && java -cp out\production\ip Dobby
+```
+
+**Console input:**
+```text
+list
+bye
+```
+
+**Expected output:**
+```text
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 3 tasks:
+1. [T][ ] read book
+2. [D][X] return book (by: Sunday)
+3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+```
+
+**Actual output:**
+```text
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 3 tasks:
+1. [T][ ] read book
+2. [D][X] return book (by: Sunday)
+3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________

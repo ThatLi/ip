@@ -23,13 +23,15 @@ public class Dobby {
 
         // Take user inputs
         System.out.print("Tell Dobby: ");
-        String input = scanner.nextLine(); // could throw exception
-        while (!dobby.isBye(input)) {
+        while (scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            if (dobby.isBye(input)) {
+                break;
+            }
             print(line);
             dobby.listen(input);
             print(line);
             System.out.print("Tell Dobby: ");
-            input = scanner.nextLine();
         }
 
         // Exit chatbot

@@ -31,6 +31,11 @@ public final class DobbyLogic {
     /** Writes the current task list to the application's data file. */
     private final Storage storage = new Storage();
 
+    /** Loads the task list saved by an earlier chatbot session. */
+    public DobbyLogic() {
+        loadTasks();
+    }
+
     /**
      * Call appropriate methods or add task to input, depending on user command in input
      * @param input User command or task to be added
@@ -55,7 +60,11 @@ public final class DobbyLogic {
 
         switch (command) {
             case LIST:
-                this.doList();
+                if (inputs.length == 1) {
+                    this.doList();
+                } else {
+                    print("> Dobby is confused. Dobby think you meant 'list'");
+                }
                 break;
 
             case MARK, UNMARK:
@@ -167,6 +176,10 @@ public final class DobbyLogic {
     public void createTask(String[] inputs, Command command) {
         switch (command) {
             case TODO:
+                if (inputs.length == 1) {
+                    print("> Dobby is confused. Dobby think you meant 'todo <description>'");
+                    return;
+                }
                 this.createToDo(joinTokens(inputs, 1, inputs.length));
                 break;
 
@@ -250,8 +263,21 @@ public final class DobbyLogic {
     private void saveTasks() {
         try {
             storage.save(tasks);
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             print("> Dobby could not save the task list.");
+        }
+    }
+
+    /** Loads saved tasks and reports an error only if the file cannot be read. */
+    private void loadTasks() {
+        try {
+            Storage.LoadResult loadResult = storage.load();
+            tasks.addAll(loadResult.getTasks());
+            if (loadResult.getInvalidTaskCount() > 0) {
+                print("> Dobby skipped " + loadResult.getInvalidTaskCount() + " invalid saved task(s).");
+            }
+        } catch (IOException | SecurityException e) {
+            print("> Dobby could not load the task list.");
         }
     }
 
