@@ -29,6 +29,9 @@ public final class Parser {
                 if (tokens[0].equalsIgnoreCase("unmark")) {
                     return new UnmarkCommand(taskNumber);
                 }
+                if (tokens[0].equalsIgnoreCase("delete")) {
+                    return new DeleteCommand(taskNumber);
+                }
             } catch (NumberFormatException e) {
                 // DobbyLogic retains the established invalid-number response for now.
             }
