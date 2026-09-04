@@ -18,3 +18,20 @@ public abstract class Command {
         return false;
     }
 }
+
+/** Reports a command error identified during parsing. */
+final class InvalidCommand extends Command {
+    /** Message explaining why the input was invalid. */
+    private final String message;
+
+    /** Creates a command that reports one error message. */
+    InvalidCommand(String message) {
+        this.message = message;
+    }
+
+    /** Displays the parsing error. */
+    @Override
+    public void execute(DobbyLogic logic) {
+        logic.showMessage(message);
+    }
+}

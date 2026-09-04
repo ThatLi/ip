@@ -1,98 +1,92 @@
 import java.time.format.DateTimeParseException;
 
-/**
- * Converts recognized user input into command objects.
- */
+/** Converts every user input into an executable command object. */
 public final class Parser {
-    /** Prevents construction of this utility class. */
     private Parser() {
     }
 
-    /**
-     * Parses commands that have been extracted from {@link DobbyLogic}.
-     *
-     * @param input complete user input
-     * @return a command object, or {@code null} when this parser does not yet handle the input
-     */
+    /** Parses one complete user input line. */
     public static Command parse(String input) {
-        if (input.trim().equalsIgnoreCase("list")) {
+        String trimmedInput = input.trim();
+        if (trimmedInput.isEmpty()) {
+            return invalid("> Dobby couldn't hear you. Dobby want you to speak louder!");
+        }
+        if (trimmedInput.equalsIgnoreCase("list")) {
             return new ListCommand();
         }
         if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         }
-        String[] tokens = input.trim().split("\\s+");
-        Command taskCommand = parseTaskCommand(tokens);
-        if (taskCommand != null) {
-            return taskCommand;
+        String[] tokens = trimmedInput.split("\\s+");
+        switch (tokens[0].toLowerCase()) {
+        case "list":
+            return invalid("> Dobby is confused. Dobby think you meant 'list'");
+        case "todo":
+            return tokens.length > 1 ? new TodoCommand(join(tokens, 1, tokens.length))
+                    : invalid("> Dobby is confused. Dobby think you meant 'todo <description>'");
+        case "deadline":
+            return deadline(tokens);
+        case "event":
+            return event(tokens);
+        case "mark":
+            return numbered(tokens, true, false);
+        case "unmark":
+            return numbered(tokens, false, false);
+        case "delete":
+            return numbered(tokens, false, true);
+        default:
+            return invalid(" > Dobby asks is this a Todo, Deadline, or Event?");
         }
-        if (tokens.length == 2) {
-            try {
-                int taskNumber = Integer.parseInt(tokens[1]);
-                if (tokens[0].equalsIgnoreCase("mark")) {
-                    return new MarkCommand(taskNumber);
-                }
-                if (tokens[0].equalsIgnoreCase("unmark")) {
-                    return new UnmarkCommand(taskNumber);
-                }
-                if (tokens[0].equalsIgnoreCase("delete")) {
-                    return new DeleteCommand(taskNumber);
-                }
-            } catch (NumberFormatException e) {
-                // DobbyLogic retains the established invalid-number response for now.
-            }
-        }
-        return null;
     }
 
-    /** Parses valid task-creation commands, leaving malformed input for DobbyLogic's error handling. */
-    private static Command parseTaskCommand(String[] tokens) {
-        if (tokens[0].equalsIgnoreCase("todo") && tokens.length > 1) {
-            return new TodoCommand(joinTokens(tokens, 1, tokens.length));
-        }
-        if (tokens[0].equalsIgnoreCase("deadline")) {
-            return parseDeadline(tokens);
-        }
-        if (tokens[0].equalsIgnoreCase("event")) {
-            return parseEvent(tokens);
-        }
-        return null;
-    }
-
-    /** Parses a valid deadline command. */
-    private static Command parseDeadline(String[] tokens) {
-        int byIndex = findMarker(tokens, "/by", 1);
-        if (byIndex == -1 || byIndex == 1 || byIndex == tokens.length - 1) {
-            return null;
+    private static Command numbered(String[] tokens, boolean isMark, boolean isDelete) {
+        if (tokens.length != 2) {
+            return invalid("> Dobby is confused. Dobby think you meant '" + tokens[0] + " <Task number>'");
         }
         try {
-            return new DeadlineCommand(joinTokens(tokens, 1, byIndex),
-                    DateTimeUtil.parse(joinTokens(tokens, byIndex + 1, tokens.length)));
-        } catch (DateTimeParseException e) {
-            return null;
+            int taskNumber = Integer.parseInt(tokens[1]);
+            return isDelete ? new DeleteCommand(taskNumber)
+                    : (isMark ? new MarkCommand(taskNumber) : new UnmarkCommand(taskNumber));
+        } catch (NumberFormatException e) {
+            return invalid("> Dobby is confused. Dobby expected a task number");
         }
     }
 
-    /** Parses a valid event command. */
-    private static Command parseEvent(String[] tokens) {
-        int fromIndex = findMarker(tokens, "/from", 1);
-        int toIndex = findMarker(tokens, "/to", fromIndex + 1);
+    private static Command deadline(String[] tokens) {
+        int byIndex = marker(tokens, "/by", 1);
+        if (byIndex == -1 || byIndex == 1 || byIndex == tokens.length - 1) {
+            return invalid("> Dobby is confused. Dobby think you meant 'deadline <description> /by <date/time>'");
+        }
+        try {
+            return new DeadlineCommand(join(tokens, 1, byIndex), DateTimeUtil.parse(join(tokens, byIndex + 1, tokens.length)));
+        } catch (DateTimeParseException e) {
+            return invalid("> Dobby needs a valid date: yyyy-MM-dd, optionally followed by HHmm.");
+        }
+    }
+
+    private static Command event(String[] tokens) {
+        int fromIndex = marker(tokens, "/from", 1);
+        int toIndex = marker(tokens, "/to", fromIndex + 1);
         if (fromIndex == -1 || toIndex == -1 || fromIndex == 1
                 || fromIndex + 1 == toIndex || toIndex == tokens.length - 1) {
-            return null;
+            return invalid("> Dobby is confused. Dobby think you meant "
+                    + "'event <description> /from <date/time> /to <date/time>'");
         }
         try {
-            return new EventCommand(joinTokens(tokens, 1, fromIndex),
-                    DateTimeUtil.parse(joinTokens(tokens, fromIndex + 1, toIndex)),
-                    DateTimeUtil.parse(joinTokens(tokens, toIndex + 1, tokens.length)));
+            return new EventCommand(join(tokens, 1, fromIndex),
+                    DateTimeUtil.parse(join(tokens, fromIndex + 1, toIndex)),
+                    DateTimeUtil.parse(join(tokens, toIndex + 1, tokens.length)));
         } catch (DateTimeParseException e) {
-            return null;
+            return invalid("> Dobby needs valid dates: yyyy-MM-dd, optionally followed by HHmm.");
         }
     }
 
-    /** Returns a marker's index, or {@code -1} when it is absent. */
-    private static int findMarker(String[] tokens, String marker, int startIndex) {
-        for (int index = Math.max(0, startIndex); index < tokens.length; index++) {
+    private static InvalidCommand invalid(String message) {
+        return new InvalidCommand(message);
+    }
+
+    private static int marker(String[] tokens, String marker, int start) {
+        for (int index = Math.max(0, start); index < tokens.length; index++) {
             if (marker.equalsIgnoreCase(tokens[index])) {
                 return index;
             }
@@ -100,8 +94,7 @@ public final class Parser {
         return -1;
     }
 
-    /** Joins tokens in the half-open range [start, end) with spaces. */
-    private static String joinTokens(String[] tokens, int start, int end) {
+    private static String join(String[] tokens, int start, int end) {
         String[] selectedTokens = new String[end - start];
         System.arraycopy(tokens, start, selectedTokens, 0, selectedTokens.length);
         return String.join(" ", selectedTokens);

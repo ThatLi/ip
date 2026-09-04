@@ -90,6 +90,11 @@ public final class DobbyLogic {
         print(res.toString());
     }
 
+    /** Displays a message supplied by a command. */
+    public void showMessage(String message) {
+        print(message);
+    }
+
     /**
      * Parse Mark & Unmark command, calls respective marking command
      * @param inputs [MARK/ UNMARK, int index]
