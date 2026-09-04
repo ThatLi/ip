@@ -19,6 +19,7 @@ _temp/
 
 /text-ui-test/ACTUAL.TXT
 text-ui-test/EXPECTED-UNIX.TXT
+/test/ui-test-session.md
 
 # Runtime task data
 /data/duke.txt
