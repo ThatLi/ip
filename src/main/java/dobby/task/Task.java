@@ -31,18 +31,30 @@ public class Task {
         this.type = type;
     }
 
+    /** Marks this task as completed. */
     public void markDone() {
         this.isDone = true;
     }
 
+    /** Marks this task as not completed. */
     public void markNotDone() {
         this.isDone = false;
     }
 
+    /**
+     * Returns the icon representing this task's completion status.
+     *
+     * @return {@code "X"} when complete; otherwise, a blank space
+     */
     public String getStatusIcon() {
         return (this.isDone ? "X" : " ");
     }
 
+    /**
+     * Returns this task's type code.
+     *
+     * @return the task type code
+     */
     public String getType() {
         return this.type;
     }
@@ -112,6 +124,7 @@ public class Task {
         }
     }
 
+    /** Returns a displayable representation of this task. */
     @Override
     public String toString() {
         return DobbyUtil.encloseBracket(this.getType()) +

@@ -27,6 +27,7 @@ public class Event extends Task {
                 + " | " + DateTimeUtil.formatForStorage(to, hasEndTime);
     }
 
+    /** Returns a displayable representation of this event. */
     @Override
     public String toString() {
         return super.toString() + " (from: " + DateTimeUtil.formatForDisplay(from, hasStartTime)

@@ -44,6 +44,14 @@ public final class Parser {
         };
     }
 
+    /**
+     * Creates a command that operates on one numbered task.
+     *
+     * @param tokens command input split into tokens
+     * @param isMark whether to create a mark command
+     * @param isDelete whether to create a delete command
+     * @return the requested command, or an invalid command when the number is invalid
+     */
     private static Command numbered(String[] tokens, boolean isMark, boolean isDelete) {
         if (tokens.length != 2) {
             return invalid("> Dobby is confused. Dobby think you meant '" + tokens[0] + " <Task number>'");
@@ -57,6 +65,12 @@ public final class Parser {
         }
     }
 
+    /**
+     * Creates a deadline command from tokenized user input.
+     *
+     * @param tokens command input split into tokens
+     * @return a deadline command, or an invalid command when the input is malformed
+     */
     private static Command deadline(String[] tokens) {
         int byIndex = marker(tokens, "/by", 1);
         if (byIndex == -1 || byIndex == 1 || byIndex == tokens.length - 1) {
@@ -69,6 +83,12 @@ public final class Parser {
         }
     }
 
+    /**
+     * Creates an event command from tokenized user input.
+     *
+     * @param tokens command input split into tokens
+     * @return an event command, or an invalid command when the input is malformed
+     */
     private static Command event(String[] tokens) {
         int fromIndex = marker(tokens, "/from", 1);
         int toIndex = marker(tokens, "/to", fromIndex + 1);
@@ -99,6 +119,14 @@ public final class Parser {
         }
     }
 
+    /**
+     * Finds the first case-insensitive marker token at or after a given index.
+     *
+     * @param tokens tokens to search
+     * @param marker marker text to find
+     * @param start first index to search
+     * @return the marker index, or {@code -1} when it is absent
+     */
     private static int marker(String[] tokens, String marker, int start) {
         for (int index = Math.max(0, start); index < tokens.length; index++) {
             if (marker.equalsIgnoreCase(tokens[index])) {
@@ -108,6 +136,14 @@ public final class Parser {
         return -1;
     }
 
+    /**
+     * Joins a range of tokens with single spaces.
+     *
+     * @param tokens tokens to join
+     * @param start inclusive index of the first token
+     * @param end exclusive index after the last token
+     * @return the joined tokens
+     */
     private static String join(String[] tokens, int start, int end) {
         String[] selectedTokens = new String[end - start];
         System.arraycopy(tokens, start, selectedTokens, 0, selectedTokens.length);

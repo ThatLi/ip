@@ -22,6 +22,7 @@ public class Deadline extends Task {
         return super.toFileString() + " | " + DateTimeUtil.formatForStorage(by, hasTime);
     }
 
+    /** Returns a displayable representation of this deadline. */
     @Override
     public String toString() {
         return super.toString() + " (by: " + DateTimeUtil.formatForDisplay(by, hasTime) + ")";
