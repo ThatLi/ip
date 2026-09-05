@@ -18,7 +18,7 @@ public final class EventCommand extends Command {
 
     /** Adds the event task. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.createEvent(description, from, to);
+    public String execute(DobbyLogic logic) {
+        return logic.createEvent(description, from, to);
     }
 }

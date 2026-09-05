@@ -16,7 +16,7 @@ public final class MarkCommand extends Command {
 
     /** Marks the selected task as complete. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.changeTaskStatus(taskNumber, true);
+    public String execute(DobbyLogic logic) {
+        return logic.changeTaskStatus(taskNumber, true);
     }
 }

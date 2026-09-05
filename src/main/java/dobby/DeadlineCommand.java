@@ -15,7 +15,7 @@ public final class DeadlineCommand extends Command {
 
     /** Adds the deadline task. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.createDeadline(description, by);
+    public String execute(DobbyLogic logic) {
+        return logic.createDeadline(description, by);
     }
 }

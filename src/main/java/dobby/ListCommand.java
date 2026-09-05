@@ -4,7 +4,7 @@
 public final class ListCommand extends Command {
     /** Displays the task list. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.showTasks();
+    public String execute(DobbyLogic logic) {
+        return logic.showTasks();
     }
 }

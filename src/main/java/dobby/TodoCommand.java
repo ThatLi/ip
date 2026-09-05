@@ -12,7 +12,7 @@ public final class TodoCommand extends Command {
 
     /** Adds the todo task. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.createToDo(description);
+    public String execute(DobbyLogic logic) {
+        return logic.createToDo(description);
     }
 }

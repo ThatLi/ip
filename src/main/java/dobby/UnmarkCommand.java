@@ -16,7 +16,7 @@ public final class UnmarkCommand extends Command {
 
     /** Marks the selected task as incomplete. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.changeTaskStatus(taskNumber, false);
+    public String execute(DobbyLogic logic) {
+        return logic.changeTaskStatus(taskNumber, false);
     }
 }

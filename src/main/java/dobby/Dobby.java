@@ -1,3 +1,5 @@
+import dobby.ui.cli.Ui;
+
 /**
  * Starts the Dobby chatbot application.
  */
@@ -12,6 +14,7 @@ public class Dobby {
         Ui ui = new Ui();
 
         // Initialize chatbot
+        ui.showMessage(dobby.getStartupMessage());
         ui.showWelcome();
 
         // Take user inputs
@@ -23,7 +26,7 @@ public class Dobby {
                 break;
             }
             ui.showLine();
-            command.execute(dobby);
+            ui.showMessage(command.execute(dobby));
             ui.showLine();
             ui.showPrompt();
         }

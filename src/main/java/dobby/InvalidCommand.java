@@ -14,9 +14,9 @@ public final class InvalidCommand extends Command {
         this.message = message;
     }
 
-    /** Displays the parsing error. */
+    /** Returns the parsing error for the UI to display. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.showMessage(message);
+    public String execute(DobbyLogic logic) {
+        return message;
     }
 }

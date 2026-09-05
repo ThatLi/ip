@@ -16,7 +16,7 @@ public final class DeleteCommand extends Command {
 
     /** Removes the selected task. */
     @Override
-    public void execute(DobbyLogic logic) {
-        logic.deleteTask(taskNumber);
+    public String execute(DobbyLogic logic) {
+        return logic.deleteTask(taskNumber);
     }
 }
