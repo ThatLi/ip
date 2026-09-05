@@ -8,7 +8,7 @@ These tests cover creating the three supported task types, listing tasks, markin
 
 **Command:**
 ```text
-cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\*.java src\main\java\dobby\ui\cli\Ui.java && java -cp out\production\ip Dobby
+cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
 ```
 
 **Input:**
@@ -80,7 +80,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\dobby\*.java src\main\java\dobby\ui\cli\Ui.java && java -cp out\production\ip Dobby
+(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
 ```
 
 **Input:**
@@ -121,7 +121,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\*.java src\main\java\dobby\ui\cli\Ui.java && java -cp out\production\ip Dobby
+cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
 ```
 
 **Input:**
@@ -179,7 +179,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\duke.txt & javac -d out\production\ip src\main\java\dobby\*.java src\main\java\dobby\ui\cli\Ui.java && java -cp out\production\ip Dobby
+(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\duke.txt & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
 ```
 
 **Input:**
