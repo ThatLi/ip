@@ -29,21 +29,25 @@ public final class DateTimeUtil {
      *
      * @param input date text in {@code yyyy-MM-dd} or {@code d/M/yyyy} format, optionally followed by a time
      * @return the parsed value and whether the user supplied a time
-     * @throws DateTimeParseException if the input is not a valid supported date or time
+     * @throws DobbyException if the input is not a valid supported date or time
      */
-    public static ParsedDateTime parse(String input) {
+    public static ParsedDateTime parse(String input) throws DobbyException {
         String[] parts = input.trim().split("\\s+");
         if (parts.length < 1 || parts.length > 2) {
-            throw new DateTimeParseException("Expected a date with an optional time", input, 0);
+            throw new DobbyException("Dobby needs a date with an optional time.");
         }
 
-        LocalDate date = parseDate(parts[0]);
-        if (parts.length == 1) {
-            return new ParsedDateTime(date.atStartOfDay(), false);
-        }
+        try {
+            LocalDate date = parseDate(parts[0]);
+            if (parts.length == 1) {
+                return new ParsedDateTime(date.atStartOfDay(), false);
+            }
 
-        LocalTime time = parseTime(parts[1]);
-        return new ParsedDateTime(LocalDateTime.of(date, time), true);
+            LocalTime time = parseTime(parts[1]);
+            return new ParsedDateTime(LocalDateTime.of(date, time), true);
+        } catch (DateTimeParseException e) {
+            throw new DobbyException("Dobby needs a valid date or time.", e);
+        }
     }
 
     /** Formats a date/time for Dobby's task list. */

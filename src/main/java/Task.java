@@ -55,51 +55,55 @@ public class Task {
      *
      * @param line saved task data
      * @return the reconstructed task
-     * @throws IllegalArgumentException if the line does not match the save format
+     * @throws DobbyException if the line does not match the save format
      */
-    public static Task fromFileString(String line) {
+    public static Task fromFileString(String line) throws DobbyException {
         String[] fields = line.split(" \\| ", -1);
         if (fields.length < 3 || fields[2].isBlank()
                 || !(fields[1].equals("0") || fields[1].equals("1"))) {
-            throw new IllegalArgumentException("Invalid saved task: " + line);
+            throw new DobbyException("Invalid saved task: " + line);
         }
 
         Task task;
-        try {
-            switch (fields[0]) {
+        switch (fields[0]) {
         case "T":
             if (fields.length != 3) {
-                throw new IllegalArgumentException("Invalid saved todo: " + line);
+                throw new DobbyException("Invalid saved todo: " + line);
             }
             task = new ToDo(fields[2]);
             break;
         case "D":
             if (fields.length != 4 || fields[3].isBlank()) {
-                throw new IllegalArgumentException("Invalid saved deadline: " + line);
+                throw new DobbyException("Invalid saved deadline: " + line);
             }
-            DateTimeUtil.ParsedDateTime deadlineDateTime = DateTimeUtil.parse(fields[3]);
+            DateTimeUtil.ParsedDateTime deadlineDateTime = parseSavedDate(fields[3], line);
             task = new Deadline(fields[2], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
             break;
         case "E":
             if (fields.length != 5 || fields[3].isBlank() || fields[4].isBlank()) {
-                throw new IllegalArgumentException("Invalid saved event: " + line);
+                throw new DobbyException("Invalid saved event: " + line);
             }
-            DateTimeUtil.ParsedDateTime startDateTime = DateTimeUtil.parse(fields[3]);
-            DateTimeUtil.ParsedDateTime endDateTime = DateTimeUtil.parse(fields[4]);
+            DateTimeUtil.ParsedDateTime startDateTime = parseSavedDate(fields[3], line);
+            DateTimeUtil.ParsedDateTime endDateTime = parseSavedDate(fields[4], line);
             task = new Event(fields[2], startDateTime.getValue(), startDateTime.hasTime(),
                     endDateTime.getValue(), endDateTime.hasTime());
             break;
             default:
-                throw new IllegalArgumentException("Unknown saved task type: " + fields[0]);
-            }
-        } catch (java.time.format.DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid saved date: " + line, e);
+                throw new DobbyException("Unknown saved task type: " + fields[0]);
         }
-
         if (fields[1].equals("1")) {
             task.markDone();
         }
         return task;
+    }
+
+    /** Parses a date from saved data while preserving the context of the invalid record. */
+    private static DateTimeUtil.ParsedDateTime parseSavedDate(String dateText, String line) throws DobbyException {
+        try {
+            return DateTimeUtil.parse(dateText);
+        } catch (DobbyException e) {
+            throw new DobbyException("Invalid saved date: " + line, e);
+        }
     }
 
     @Override

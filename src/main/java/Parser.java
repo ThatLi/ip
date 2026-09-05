@@ -1,5 +1,3 @@
-import java.time.format.DateTimeParseException;
-
 /** Converts every user input into an executable command object. */
 public final class Parser {
     private Parser() {
@@ -36,11 +34,11 @@ public final class Parser {
             return invalid("> Dobby is confused. Dobby think you meant '" + tokens[0] + " <Task number>'");
         }
         try {
-            int taskNumber = Integer.parseInt(tokens[1]);
+            int taskNumber = parseTaskNumber(tokens[1]);
             return isDelete ? new DeleteCommand(taskNumber)
                     : (isMark ? new MarkCommand(taskNumber) : new UnmarkCommand(taskNumber));
-        } catch (NumberFormatException e) {
-            return invalid("> Dobby is confused. Dobby expected a task number");
+        } catch (DobbyException e) {
+            return invalid(e.getMessage());
         }
     }
 
@@ -51,7 +49,7 @@ public final class Parser {
         }
         try {
             return new DeadlineCommand(join(tokens, 1, byIndex), DateTimeUtil.parse(join(tokens, byIndex + 1, tokens.length)));
-        } catch (DateTimeParseException e) {
+        } catch (DobbyException e) {
             return invalid("> Dobby needs a valid date: yyyy-MM-dd, optionally followed by HHmm.");
         }
     }
@@ -68,13 +66,22 @@ public final class Parser {
             return new EventCommand(join(tokens, 1, fromIndex),
                     DateTimeUtil.parse(join(tokens, fromIndex + 1, toIndex)),
                     DateTimeUtil.parse(join(tokens, toIndex + 1, tokens.length)));
-        } catch (DateTimeParseException e) {
+        } catch (DobbyException e) {
             return invalid("> Dobby needs valid dates: yyyy-MM-dd, optionally followed by HHmm.");
         }
     }
 
     private static InvalidCommand invalid(String message) {
         return new InvalidCommand(message);
+    }
+
+    /** Converts task-number text into an integer used by a Dobby command. */
+    private static int parseTaskNumber(String text) throws DobbyException {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            throw new DobbyException("Dobby is confused. Dobby expected a task number", e);
+        }
     }
 
     private static int marker(String[] tokens, String marker, int start) {

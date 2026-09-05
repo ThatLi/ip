@@ -65,7 +65,7 @@ public class Storage {
             if (!line.isBlank()) {
                 try {
                     tasks.add(Task.fromFileString(line));
-                } catch (IllegalArgumentException e) {
+                } catch (DobbyException e) {
                     invalidTaskCount++;
                 }
             }
