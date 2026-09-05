@@ -5,6 +5,7 @@ import dobby.command.DeadlineCommand;
 import dobby.command.DeleteCommand;
 import dobby.command.EventCommand;
 import dobby.command.ExitCommand;
+import dobby.command.FindCommand;
 import dobby.command.InvalidCommand;
 import dobby.command.ListCommand;
 import dobby.command.MarkCommand;
@@ -40,6 +41,16 @@ class ParserTest {
     @Test
     void parse_todoWithoutDescription_returnsHelpfulError() {
         assertInvalidMessage("todo", "> Dobby is confused. Dobby think you meant 'todo <description>'");
+    }
+
+    @Test
+    void parse_findWithKeyword_returnsFindCommand() {
+        assertInstanceOf(FindCommand.class, Parser.parse("find book"));
+    }
+
+    @Test
+    void parse_findWithoutKeyword_returnsHelpfulError() {
+        assertInvalidMessage("find", "> Dobby is confused. Dobby think you meant 'find <keyword>'");
     }
 
     @Test

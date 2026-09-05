@@ -75,6 +75,26 @@ class DobbyLogicTest {
     }
 
     @Test
+    void findTasks_matchingKeyword_returnsCaseInsensitiveMatchesWithNewNumbers() throws Exception {
+        logic.createToDo("read book");
+        logic.createDeadline("return BOOK", DateTimeUtil.parse("2019-12-02"));
+        logic.createToDo("buy groceries");
+
+        String result = logic.findTasks("book");
+
+        assertEquals("> Dobby show all tasks that has the word \"book\":\n"
+                + "1. [T][ ] read book\n"
+                + "2. [D][ ] return BOOK (by: Dec 02 2019)\n", result);
+    }
+
+    @Test
+    void findTasks_noMatchingKeyword_returnsOnlyHeading() {
+        logic.createToDo("read book");
+
+        assertEquals("> Dobby show all tasks that has the word \"meeting\":\n", logic.findTasks("meeting"));
+    }
+
+    @Test
     void createDeadline_dateOnly_addsDeadlineWithDateDisplay() throws Exception {
         String result = logic.createDeadline("return book", DateTimeUtil.parse("2019-12-02"));
 
