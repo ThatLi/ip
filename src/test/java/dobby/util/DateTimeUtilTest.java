@@ -71,4 +71,32 @@ class DateTimeUtilTest {
     void parse_extraDateTimePart_exceptionThrown() {
         assertThrows(DobbyException.class, () -> DateTimeUtil.parse("2019-12-03 0900 extra"));
     }
+
+    @Test
+    void formatForDisplay_dateOnly_returnsReadableDate() {
+        String result = DateTimeUtil.formatForDisplay(LocalDateTime.of(2019, 12, 3, 9, 5), false);
+
+        assertEquals("Dec 03 2019", result);
+    }
+
+    @Test
+    void formatForDisplay_dateAndTime_returnsReadableDateAndTime() {
+        String result = DateTimeUtil.formatForDisplay(LocalDateTime.of(2019, 12, 3, 9, 5), true);
+
+        assertEquals("Dec 03 2019, 09:05", result);
+    }
+
+    @Test
+    void formatForStorage_dateOnly_returnsIsoDate() {
+        String result = DateTimeUtil.formatForStorage(LocalDateTime.of(2019, 12, 3, 9, 5), false);
+
+        assertEquals("2019-12-03", result);
+    }
+
+    @Test
+    void formatForStorage_dateAndTime_returnsIsoDateAndCompactTime() {
+        String result = DateTimeUtil.formatForStorage(LocalDateTime.of(2019, 12, 3, 9, 5), true);
+
+        assertEquals("2019-12-03 0905", result);
+    }
 }
