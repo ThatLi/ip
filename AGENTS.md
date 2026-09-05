@@ -45,6 +45,9 @@ Maintain JUnit tests for approximately the top 50% highest-value methods, priori
 
 ## Git
 
+For every future commit proposal, review, and creation, load and follow the project-local
+`seedu-git-standard` skill at `.codex/skills/seedu-git-standard/SKILL.md`. This is mandatory
+for commit messages and branch names; apply it before asking for or acting on commit approval.
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
