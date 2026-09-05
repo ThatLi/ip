@@ -17,6 +17,7 @@ todo read book
 deadline return book /by 2/12/2019 1800
 event project meeting /from 2019-12-03 0900 /to 2019-12-03 1100
 list
+find book
 mark 2
 unmark 2
 list
@@ -52,6 +53,12 @@ Tell Dobby: ____________________________________________________________
 1. [T][ ] read book
 2. [D][ ] return book (by: Dec 02 2019, 18:00)
 3. [E][ ] project meeting (from: Dec 03 2019, 09:00 to: Dec 03 2019, 11:00)
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Here are the matching tasks in your list:
+1. [T][ ] read book
+2. [D][ ] return book (by: Dec 02 2019, 18:00)
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
