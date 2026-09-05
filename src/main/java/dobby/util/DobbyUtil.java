@@ -1,3 +1,5 @@
+package dobby.util;
+
 /**
  * Provides general-purpose string formatting for Dobby task descriptions.
  */

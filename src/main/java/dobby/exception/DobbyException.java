@@ -1,3 +1,5 @@
+package dobby.exception;
+
 /**
  * Signals an error caused by invalid Dobby command data or task data.
  */

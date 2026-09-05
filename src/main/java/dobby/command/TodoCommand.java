@@ -1,3 +1,7 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+
 /**
  * Adds a new todo task.
  */

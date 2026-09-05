@@ -1,3 +1,7 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+
 /**
  * Displays every task currently recorded by Dobby.
  */

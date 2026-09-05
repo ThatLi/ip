@@ -1,3 +1,7 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+
 /**
  * Marks a specified task as incomplete.
  */

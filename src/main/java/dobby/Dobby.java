@@ -1,3 +1,8 @@
+package dobby;
+
+import dobby.command.Command;
+import dobby.logic.DobbyLogic;
+import dobby.parser.Parser;
 import dobby.ui.cli.Ui;
 
 /**

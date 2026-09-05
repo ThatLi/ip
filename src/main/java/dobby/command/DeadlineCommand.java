@@ -1,3 +1,8 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+import dobby.util.DateTimeUtil;
+
 /**
  * Adds a new deadline task with its due date and time.
  */

@@ -1,3 +1,9 @@
+package dobby.task;
+
+import dobby.exception.DobbyException;
+import dobby.util.DateTimeUtil;
+import dobby.util.DobbyUtil;
+
 /**
  * General Task class to be stored in DobbyLogic.java
  */

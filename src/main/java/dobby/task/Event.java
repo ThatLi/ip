@@ -1,4 +1,8 @@
+package dobby.task;
+
 import java.time.LocalDateTime;
+
+import dobby.util.DateTimeUtil;
 
 /** A task that occurs between a start and end date, optionally with times. */
 public class Event extends Task {

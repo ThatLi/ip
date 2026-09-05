@@ -1,3 +1,7 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+
 /**
  * Represents one parsed instruction that can be performed by Dobby.
  */

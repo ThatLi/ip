@@ -1,9 +1,11 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+
 /**
  * Reports a command error identified during parsing.
  *
- * <p>This class is public so that {@code Parser}, which will belong to the
- * {@code dobby.parser} package, can create invalid commands after the package
- * reorganization.</p>
+ * <p>This class is public so that {@code dobby.parser.Parser} can create it.</p>
  */
 public final class InvalidCommand extends Command {
     /** Message explaining why the input was invalid. */

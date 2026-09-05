@@ -1,3 +1,7 @@
+package dobby.command;
+
+import dobby.logic.DobbyLogic;
+
 /**
  * Removes a specified task from Dobby's task list.
  */
