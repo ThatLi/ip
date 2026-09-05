@@ -9,9 +9,15 @@ public class Deadline extends Task {
     private final LocalDateTime by;
     private final boolean hasTime;
 
-    /** Creates a deadline with its parsed due date and time. */
-    public Deadline(String str, LocalDateTime by, boolean hasTime) {
-        super(str, "D");
+    /**
+     * Creates a deadline with its parsed due date and time.
+     *
+     * @param description deadline description
+     * @param by due date and time
+     * @param hasTime whether the due date includes a time
+     */
+    public Deadline(String description, LocalDateTime by, boolean hasTime) {
+        super(description, "D");
         this.by = by;
         this.hasTime = hasTime;
     }

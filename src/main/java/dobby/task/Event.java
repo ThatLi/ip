@@ -11,9 +11,18 @@ public class Event extends Task {
     private final LocalDateTime to;
     private final boolean hasEndTime;
 
-    /** Creates an event with parsed start and end dates and times. */
-    public Event(String str, LocalDateTime from, boolean hasStartTime, LocalDateTime to, boolean hasEndTime) {
-        super(str, "E");
+    /**
+     * Creates an event with parsed start and end dates and times.
+     *
+     * @param description event description
+     * @param from start date and time
+     * @param hasStartTime whether the start date includes a time
+     * @param to end date and time
+     * @param hasEndTime whether the end date includes a time
+     */
+    public Event(String description, LocalDateTime from, boolean hasStartTime,
+                 LocalDateTime to, boolean hasEndTime) {
+        super(description, "E");
         this.from = from;
         this.hasStartTime = hasStartTime;
         this.to = to;

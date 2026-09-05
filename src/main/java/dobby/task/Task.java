@@ -1,50 +1,66 @@
 package dobby.task;
 
+import java.util.Locale;
+
 import dobby.exception.DobbyException;
 import dobby.util.DateTimeUtil;
 import dobby.util.DobbyUtil;
 
-/**
- * General Task class to be stored in DobbyLogic.java
- */
+/** Represents a task recorded by Dobby. */
 public class Task {
     protected String description;
     protected boolean isDone;
     protected String type = " ";
 
     /**
-     * Initiate a task with its description
-     * @param str Description
+     * Creates a task with its description.
+     *
+     * @param description task description
      */
-    public Task(String str) {
-        this.description = str;
+    public Task(String description) {
+        this.description = description;
         this.isDone = false;
     }
 
     /**
-     * Initiate a task with description and task type
-     * @param str Description
-     * @param type Type of task
+     * Creates a task with its description and type.
+     *
+     * @param description task description
+     * @param type task type
      */
-    public Task(String str, String type) {
-        this(str);
+    public Task(String description, String type) {
+        this(description);
         this.type = type;
     }
 
+    /** Marks this task as complete. */
     public void markDone() {
-        this.isDone = true;
+        isDone = true;
     }
 
+    /** Marks this task as incomplete. */
     public void markNotDone() {
-        this.isDone = false;
+        isDone = false;
     }
 
+    /** Returns the completion-status icon used in task displays. */
     public String getStatusIcon() {
-        return (this.isDone ? "X" : " ");
+        return isDone ? "X" : " ";
     }
 
+    /** Returns the task type icon used in task displays. */
     public String getType() {
-        return this.type;
+        return type;
+    }
+
+    /**
+     * Returns whether this task's description contains the given text, ignoring letter case.
+     *
+     * @param keyword text to look for
+     * @return whether the description contains the text
+     */
+    public boolean hasDescriptionContaining(String keyword) {
+        return description.toLowerCase(Locale.ROOT).contains(keyword.toLowerCase(Locale.ROOT));
     }
 
     /**
@@ -53,7 +69,7 @@ public class Task {
      * @return task type, status, and description separated by pipes
      */
     public String toFileString() {
-        return this.type + " | " + (this.isDone ? "1" : "0") + " | " + this.description;
+        return type + " | " + (isDone ? "1" : "0") + " | " + description;
     }
 
     /**
@@ -114,8 +130,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return DobbyUtil.encloseBracket(this.getType()) +
-                DobbyUtil.encloseBracket(this.getStatusIcon()) + " " +
-                this.description;
+        return DobbyUtil.encloseBracket(getType())
+                + DobbyUtil.encloseBracket(getStatusIcon()) + " "
+                + description;
     }
 }

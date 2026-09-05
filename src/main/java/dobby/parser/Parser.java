@@ -5,6 +5,7 @@ import dobby.command.DeadlineCommand;
 import dobby.command.DeleteCommand;
 import dobby.command.EventCommand;
 import dobby.command.ExitCommand;
+import dobby.command.FindCommand;
 import dobby.command.InvalidCommand;
 import dobby.command.ListCommand;
 import dobby.command.MarkCommand;
@@ -37,6 +38,8 @@ public final class Parser {
                     : invalid("> Dobby is confused. Dobby think you meant 'todo <description>'");
             case "deadline" -> deadline(tokens);
             case "event" -> event(tokens);
+            case "find" -> tokens.length > 1 ? new FindCommand(join(tokens, 1, tokens.length))
+                    : invalid("> Dobby is confused. Dobby think you meant 'find <keyword>'");
             case "mark" -> numbered(tokens, true, false);
             case "unmark" -> numbered(tokens, false, false);
             case "delete" -> numbered(tokens, false, true);
@@ -63,7 +66,8 @@ public final class Parser {
             return invalid("> Dobby is confused. Dobby think you meant 'deadline <description> /by <date/time>'");
         }
         try {
-            return new DeadlineCommand(join(tokens, 1, byIndex), DateTimeUtil.parse(join(tokens, byIndex + 1, tokens.length)));
+            return new DeadlineCommand(join(tokens, 1, byIndex),
+                    DateTimeUtil.parse(join(tokens, byIndex + 1, tokens.length)));
         } catch (DobbyException e) {
             return invalid("> Dobby needs a valid date: yyyy-MM-dd, optionally followed by HHmm.");
         }
