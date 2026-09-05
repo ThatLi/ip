@@ -17,26 +17,18 @@ public final class Parser {
         if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         }
-        String[] tokens = trimmedInput.split("\\s+");
-        switch (tokens[0].toLowerCase()) {
-        case "list":
-            return invalid("> Dobby is confused. Dobby think you meant 'list'");
-        case "todo":
-            return tokens.length > 1 ? new TodoCommand(join(tokens, 1, tokens.length))
+        String[] tokens = trimmedInput.split("\\s+"); // '\s+' matches 1 or more whitespace(s)
+        return switch (tokens[0].toLowerCase()) {
+            case "list" -> invalid("> Dobby is confused. Dobby think you meant 'list'");
+            case "todo" -> tokens.length > 1 ? new TodoCommand(join(tokens, 1, tokens.length))
                     : invalid("> Dobby is confused. Dobby think you meant 'todo <description>'");
-        case "deadline":
-            return deadline(tokens);
-        case "event":
-            return event(tokens);
-        case "mark":
-            return numbered(tokens, true, false);
-        case "unmark":
-            return numbered(tokens, false, false);
-        case "delete":
-            return numbered(tokens, false, true);
-        default:
-            return invalid(" > Dobby asks is this a Todo, Deadline, or Event?");
-        }
+            case "deadline" -> deadline(tokens);
+            case "event" -> event(tokens);
+            case "mark" -> numbered(tokens, true, false);
+            case "unmark" -> numbered(tokens, false, false);
+            case "delete" -> numbered(tokens, false, true);
+            default -> invalid(" > Dobby asks is this a Todo, Deadline, or Event?");
+        };
     }
 
     private static Command numbered(String[] tokens, boolean isMark, boolean isDelete) {
