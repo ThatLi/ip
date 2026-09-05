@@ -6,16 +6,17 @@ import dobby.exception.DobbyException;
 import dobby.util.DateTimeUtil;
 import dobby.util.DobbyUtil;
 
-/** Represents a task recorded by Dobby. */
+/**
+ * General Task class to be stored in DobbyLogic.java
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
     protected String type = " ";
 
     /**
-     * Creates a task with its description.
-     *
-     * @param description task description
+     * Initiate a task with its description
+     * @param description Description
      */
     public Task(String description) {
         this.description = description;
@@ -23,32 +24,39 @@ public class Task {
     }
 
     /**
-     * Creates a task with its description and type.
-     *
-     * @param description task description
-     * @param type task type
+     * Initiate a task with description and task type
+     * @param description Task description
+     * @param type Type of task
      */
     public Task(String description, String type) {
         this(description);
         this.type = type;
     }
 
-    /** Marks this task as complete. */
+    /** Marks this task as completed. */
     public void markDone() {
-        isDone = true;
+        this.isDone = true;
     }
 
-    /** Marks this task as incomplete. */
+    /** Marks this task as not completed. */
     public void markNotDone() {
-        isDone = false;
+        this.isDone = false;
     }
 
-    /** Returns the completion-status icon used in task displays. */
+    /**
+     * Returns the icon representing this task's completion status.
+     *
+     * @return {@code "X"} when complete; otherwise, a blank space
+     */
     public String getStatusIcon() {
-        return isDone ? "X" : " ";
+        return (this.isDone ? "X" : " ");
     }
 
-    /** Returns the task type icon used in task displays. */
+    /**
+     * Returns this task's type code.
+     *
+     * @return the task type code
+     */
     public String getType() {
         return type;
     }
@@ -69,7 +77,7 @@ public class Task {
      * @return task type, status, and description separated by pipes
      */
     public String toFileString() {
-        return type + " | " + (isDone ? "1" : "0") + " | " + description;
+        return this.type + " | " + (this.isDone ? "1" : "0") + " | " + this.description;
     }
 
     /**
@@ -128,10 +136,11 @@ public class Task {
         }
     }
 
+    /** Returns a displayable representation of this task. */
     @Override
     public String toString() {
-        return DobbyUtil.encloseBracket(getType())
-                + DobbyUtil.encloseBracket(getStatusIcon()) + " "
-                + description;
+        return DobbyUtil.encloseBracket(this.getType()) +
+                DobbyUtil.encloseBracket(this.getStatusIcon()) + " " +
+                this.description;
     }
 }

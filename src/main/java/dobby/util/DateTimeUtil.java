@@ -64,6 +64,13 @@ public final class DateTimeUtil {
         return hasTime ? dateTime.format(SAVED_DATE_TIME) : dateTime.toLocalDate().format(INPUT_DATE);
     }
 
+    /**
+     * Parses a time in compact or colon-separated 24-hour format.
+     *
+     * @param text time text to parse
+     * @return the parsed time
+     * @throws DateTimeParseException if the text is not in a supported time format
+     */
     private static LocalTime parseTime(String text) {
         try {
             return LocalTime.parse(text, INPUT_TIME);
@@ -72,6 +79,13 @@ public final class DateTimeUtil {
         }
     }
 
+    /**
+     * Parses a date in ISO or slash-separated format.
+     *
+     * @param text date text to parse
+     * @return the parsed date
+     * @throws DateTimeParseException if the text is not in a supported date format
+     */
     private static LocalDate parseDate(String text) {
         try {
             return LocalDate.parse(text, INPUT_DATE);
