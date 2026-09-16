@@ -21,6 +21,8 @@ public final class Parser {
 
     /** Parses one complete user input line. */
     public static Command parse(String input) {
+        assert input != null : "Parser input must come from a successful UI read";
+
         String trimmedInput = input.trim();
         if (trimmedInput.isEmpty()) {
             return invalid("> Dobby couldn't hear you. Dobby want you to speak louder!");
@@ -56,6 +58,8 @@ public final class Parser {
      * @return the requested command, or an invalid command when the number is invalid
      */
     private static Command numbered(String[] tokens, boolean isMark, boolean isDelete) {
+        assert !(isMark && isDelete) : "A numbered command cannot be both mark and delete";
+
         if (tokens.length != 2) {
             return invalid("> Dobby is confused. Dobby think you meant '" + tokens[0] + " <Task number>'");
         }
@@ -132,7 +136,11 @@ public final class Parser {
      * @return the marker index, or {@code -1} when it is absent
      */
     private static int marker(String[] tokens, String marker, int start) {
-        for (int index = Math.max(0, start); index < tokens.length; index++) {
+        assert tokens != null : "Tokens must be created before searching for a marker";
+        assert marker != null : "Marker text must be specified";
+        assert start >= 0 && start <= tokens.length : "Marker search start must be within the token array";
+
+        for (int index = start; index < tokens.length; index++) {
             if (marker.equalsIgnoreCase(tokens[index])) {
                 return index;
             }
@@ -149,6 +157,10 @@ public final class Parser {
      * @return the joined tokens
      */
     private static String join(String[] tokens, int start, int end) {
+        assert tokens != null : "Tokens must be created before joining them";
+        assert start >= 0 && start <= end && end <= tokens.length
+                : "Joined token range must be within the token array";
+
         String[] selectedTokens = new String[end - start];
         System.arraycopy(tokens, start, selectedTokens, 0, selectedTokens.length);
         return String.join(" ", selectedTokens);

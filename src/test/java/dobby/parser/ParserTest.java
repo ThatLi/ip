@@ -3,6 +3,7 @@ package dobby.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,11 @@ import dobby.command.UnmarkCommand;
 
 /** Tests conversion of console input into Dobby commands. */
 class ParserTest {
+    @Test
+    void parse_nullInput_assertionError() {
+        assertThrows(AssertionError.class, () -> Parser.parse(null));
+    }
+
     @Test
     void parse_listCommand_returnsListCommand() {
         assertInstanceOf(ListCommand.class, Parser.parse("  LIST  "));

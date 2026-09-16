@@ -11,6 +11,11 @@ import dobby.exception.DobbyException;
 /** Tests task persistence records and completion status. */
 class TaskTest {
     @Test
+    void constructor_blankDescription_assertionError() {
+        assertThrows(AssertionError.class, () -> new ToDo(" "));
+    }
+
+    @Test
     void fromFileString_incompleteTodo_restoresTodo() throws DobbyException {
         Task task = Task.fromFileString("T | 0 | read book");
 
@@ -61,6 +66,11 @@ class TaskTest {
     @Test
     void fromFileString_invalidStatus_exceptionThrown() {
         assertInvalidRecord("T | 2 | read book", "Invalid saved task: T | 2 | read book");
+    }
+
+    @Test
+    void fromFileString_nullRecord_assertionError() {
+        assertThrows(AssertionError.class, () -> Task.fromFileString(null));
     }
 
     @Test
