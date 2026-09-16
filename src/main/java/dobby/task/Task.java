@@ -10,9 +10,22 @@ import dobby.util.DobbyUtil;
  * Represents a task with a description, type, and completion status.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
-    protected String type = " ";
+    private static final String FIELD_SEPARATOR = " \\| ";
+    private static final String INCOMPLETE_STATUS = "0";
+    private static final String COMPLETE_STATUS = "1";
+    private static final int TYPE_FIELD = 0;
+    private static final int STATUS_FIELD = 1;
+    private static final int DESCRIPTION_FIELD = 2;
+    private static final int TODO_FIELD_COUNT = 3;
+    private static final int DEADLINE_FIELD_COUNT = 4;
+    private static final int EVENT_FIELD_COUNT = 5;
+    private static final int DEADLINE_DATE_FIELD = 3;
+    private static final int EVENT_START_DATE_FIELD = 3;
+    private static final int EVENT_END_DATE_FIELD = 4;
+
+    private final String description;
+    private final String type;
+    private boolean isDone;
 
     /**
      * Creates a task with its description.
@@ -33,8 +46,9 @@ public class Task {
      * @param type Type of task.
      */
     public Task(String description, String type) {
-        this(description);
+        this.description = description;
         this.type = type;
+        this.isDone = false;
     }
 
     /** Marks this task as completed. */
@@ -92,6 +106,10 @@ public class Task {
      * @throws DobbyException if the line does not match the save format
      */
     public static Task fromFileString(String line) throws DobbyException {
+<<<<<<< HEAD
+        String[] fields = line.split(FIELD_SEPARATOR, -1);
+        validateCommonFields(fields, line);
+=======
         assert line != null : "A saved task line must come from the storage reader";
 
         String[] fields = line.split(" \\| ", -1);
@@ -99,38 +117,64 @@ public class Task {
                 || !(fields[1].equals("0") || fields[1].equals("1"))) {
             throw new DobbyException("Invalid saved task: " + line);
         }
+>>>>>>> master
 
-        Task task;
-        switch (fields[0]) {
-            case "T":
-                if (fields.length != 3) {
-                    throw new DobbyException("Invalid saved todo: " + line);
-                }
-                task = new ToDo(fields[2]);
-                break;
-            case "D":
-                if (fields.length != 4 || fields[3].isBlank()) {
-                    throw new DobbyException("Invalid saved deadline: " + line);
-                }
-                DateTimeUtil.ParsedDateTime deadlineDateTime = parseSavedDate(fields[3], line);
-                task = new Deadline(fields[2], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
-                break;
-            case "E":
-                if (fields.length != 5 || fields[3].isBlank() || fields[4].isBlank()) {
-                    throw new DobbyException("Invalid saved event: " + line);
-                }
-                DateTimeUtil.ParsedDateTime startDateTime = parseSavedDate(fields[3], line);
-                DateTimeUtil.ParsedDateTime endDateTime = parseSavedDate(fields[4], line);
-                task = new Event(fields[2], startDateTime.getValue(), startDateTime.hasTime(),
-                        endDateTime.getValue(), endDateTime.hasTime());
-                break;
-            default:
-                throw new DobbyException("Unknown saved task type: " + fields[0]);
-        }
-        if (fields[1].equals("1")) {
+        Task task = createTask(fields, line);
+        if (fields[STATUS_FIELD].equals(COMPLETE_STATUS)) {
             task.markDone();
         }
         return task;
+    }
+
+    /** Validates fields shared by every saved task type. */
+    private static void validateCommonFields(String[] fields, String line) throws DobbyException {
+        boolean hasRequiredFields = fields.length >= TODO_FIELD_COUNT;
+        boolean hasDescription = hasRequiredFields && !fields[DESCRIPTION_FIELD].isBlank();
+        boolean hasValidStatus = hasRequiredFields
+                && (fields[STATUS_FIELD].equals(INCOMPLETE_STATUS)
+                        || fields[STATUS_FIELD].equals(COMPLETE_STATUS));
+        if (!hasDescription || !hasValidStatus) {
+            throw new DobbyException("Invalid saved task: " + line);
+        }
+    }
+
+    /** Creates the task subtype identified by the saved type field. */
+    private static Task createTask(String[] fields, String line) throws DobbyException {
+        return switch (fields[TYPE_FIELD]) {
+            case "T" -> createTodo(fields, line);
+            case "D" -> createDeadline(fields, line);
+            case "E" -> createEvent(fields, line);
+            default -> throw new DobbyException("Unknown saved task type: " + fields[TYPE_FIELD]);
+        };
+    }
+
+    /** Creates a todo from validated common fields. */
+    private static Task createTodo(String[] fields, String line) throws DobbyException {
+        if (fields.length != TODO_FIELD_COUNT) {
+            throw new DobbyException("Invalid saved todo: " + line);
+        }
+        return new ToDo(fields[DESCRIPTION_FIELD]);
+    }
+
+    /** Creates a deadline from validated common fields. */
+    private static Task createDeadline(String[] fields, String line) throws DobbyException {
+        if (fields.length != DEADLINE_FIELD_COUNT || fields[DEADLINE_DATE_FIELD].isBlank()) {
+            throw new DobbyException("Invalid saved deadline: " + line);
+        }
+        DateTimeUtil.ParsedDateTime deadlineDateTime = parseSavedDate(fields[DEADLINE_DATE_FIELD], line);
+        return new Deadline(fields[DESCRIPTION_FIELD], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
+    }
+
+    /** Creates an event from validated common fields. */
+    private static Task createEvent(String[] fields, String line) throws DobbyException {
+        if (fields.length != EVENT_FIELD_COUNT || fields[EVENT_START_DATE_FIELD].isBlank()
+                || fields[EVENT_END_DATE_FIELD].isBlank()) {
+            throw new DobbyException("Invalid saved event: " + line);
+        }
+        DateTimeUtil.ParsedDateTime startDateTime = parseSavedDate(fields[EVENT_START_DATE_FIELD], line);
+        DateTimeUtil.ParsedDateTime endDateTime = parseSavedDate(fields[EVENT_END_DATE_FIELD], line);
+        return new Event(fields[DESCRIPTION_FIELD], startDateTime.getValue(), startDateTime.hasTime(),
+                endDateTime.getValue(), endDateTime.hasTime());
     }
 
     /** Parses a date from saved data while preserving the context of the invalid record. */
