@@ -10,6 +10,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_25
 }
 
+checkstyle {
+    toolVersion = '14.1.0'
+    maxWarnings = 0
+}
+
 repositories {
     mavenCentral()
 }

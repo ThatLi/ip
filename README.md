@@ -2,6 +2,21 @@
 
 This is a project template for a greenfield Java project. It's named after the servant elf in Harry Potter _Dobby_. Given below are instructions on how to use it.
 
+## Checking code style
+
+Use JDK 25 and run `./gradlew checkstyleMain checkstyleTest` (`.\gradlew.bat checkstyleMain checkstyleTest`
+in PowerShell) to check production and test code. `./gradlew check` runs these checks together with JUnit tests.
+Style errors and warnings fail the checks; HTML reports are written to `build/reports/checkstyle/`.
+
+The configuration in `config/checkstyle/` comes from
+[AddressBook Level 3](https://github.com/se-edu/addressbook-level3/tree/master/config/checkstyle)
+and follows the [SE-EDU Java coding standard](https://se-education.org/guides/conventions/java/intermediate.html).
+Keep using the coding-standard skill and code review for guidelines that automated checks cannot fully assess.
+
+For optional IntelliJ feedback, follow the
+[SE-EDU Checkstyle-IDEA setup guide](https://se-education.org/guides/tutorials/checkstyle.html#using-checkstyle-idea-plugin),
+select Checkstyle **14.1.0**, load `config/checkstyle/checkstyle.xml`, and include test sources in the scan scope.
+
 ## Setting up in Intellij
 
 Prerequisites: JDK 25, update Intellij to the most recent version.

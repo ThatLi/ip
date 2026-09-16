@@ -7,7 +7,7 @@ import dobby.util.DateTimeUtil;
 import dobby.util.DobbyUtil;
 
 /**
- * General Task class to be stored in DobbyLogic.java
+ * Represents a task with a description, type, and completion status.
  */
 public class Task {
     protected String description;
@@ -15,8 +15,9 @@ public class Task {
     protected String type = " ";
 
     /**
-     * Initiate a task with its description
-     * @param description Description
+     * Creates a task with its description.
+     *
+     * @param description Description of the task.
      */
     public Task(String description) {
         this.description = description;
@@ -24,9 +25,10 @@ public class Task {
     }
 
     /**
-     * Initiate a task with description and task type
-     * @param description Task description
-     * @param type Type of task
+     * Creates a task with a description and task type.
+     *
+     * @param description Description of the task.
+     * @param type Type of task.
      */
     public Task(String description, String type) {
         this(description);
@@ -64,7 +66,7 @@ public class Task {
     /**
      * Returns whether this task's description contains the given text, ignoring letter case.
      *
-     * @param keyword text to look for
+     * @param keyword Text to look for.
      * @return whether the description contains the text
      */
     public boolean hasDescriptionContaining(String keyword) {
@@ -83,7 +85,7 @@ public class Task {
     /**
      * Reconstructs a task from one line in the task data file.
      *
-     * @param line saved task data
+     * @param line Saved task data.
      * @return the reconstructed task
      * @throws DobbyException if the line does not match the save format
      */
@@ -96,28 +98,28 @@ public class Task {
 
         Task task;
         switch (fields[0]) {
-        case "T":
-            if (fields.length != 3) {
-                throw new DobbyException("Invalid saved todo: " + line);
-            }
-            task = new ToDo(fields[2]);
-            break;
-        case "D":
-            if (fields.length != 4 || fields[3].isBlank()) {
-                throw new DobbyException("Invalid saved deadline: " + line);
-            }
-            DateTimeUtil.ParsedDateTime deadlineDateTime = parseSavedDate(fields[3], line);
-            task = new Deadline(fields[2], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
-            break;
-        case "E":
-            if (fields.length != 5 || fields[3].isBlank() || fields[4].isBlank()) {
-                throw new DobbyException("Invalid saved event: " + line);
-            }
-            DateTimeUtil.ParsedDateTime startDateTime = parseSavedDate(fields[3], line);
-            DateTimeUtil.ParsedDateTime endDateTime = parseSavedDate(fields[4], line);
-            task = new Event(fields[2], startDateTime.getValue(), startDateTime.hasTime(),
-                    endDateTime.getValue(), endDateTime.hasTime());
-            break;
+            case "T":
+                if (fields.length != 3) {
+                    throw new DobbyException("Invalid saved todo: " + line);
+                }
+                task = new ToDo(fields[2]);
+                break;
+            case "D":
+                if (fields.length != 4 || fields[3].isBlank()) {
+                    throw new DobbyException("Invalid saved deadline: " + line);
+                }
+                DateTimeUtil.ParsedDateTime deadlineDateTime = parseSavedDate(fields[3], line);
+                task = new Deadline(fields[2], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
+                break;
+            case "E":
+                if (fields.length != 5 || fields[3].isBlank() || fields[4].isBlank()) {
+                    throw new DobbyException("Invalid saved event: " + line);
+                }
+                DateTimeUtil.ParsedDateTime startDateTime = parseSavedDate(fields[3], line);
+                DateTimeUtil.ParsedDateTime endDateTime = parseSavedDate(fields[4], line);
+                task = new Event(fields[2], startDateTime.getValue(), startDateTime.hasTime(),
+                        endDateTime.getValue(), endDateTime.hasTime());
+                break;
             default:
                 throw new DobbyException("Unknown saved task type: " + fields[0]);
         }
@@ -139,8 +141,8 @@ public class Task {
     /** Returns a displayable representation of this task. */
     @Override
     public String toString() {
-        return DobbyUtil.encloseBracket(this.getType()) +
-                DobbyUtil.encloseBracket(this.getStatusIcon()) + " " +
-                this.description;
+        return DobbyUtil.encloseBracket(this.getType())
+                + DobbyUtil.encloseBracket(this.getStatusIcon()) + " "
+                + this.description;
     }
 }

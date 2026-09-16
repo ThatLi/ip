@@ -1,5 +1,12 @@
 package dobby.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
 import dobby.command.Command;
 import dobby.command.DeadlineCommand;
 import dobby.command.DeleteCommand;
@@ -11,12 +18,6 @@ import dobby.command.ListCommand;
 import dobby.command.MarkCommand;
 import dobby.command.TodoCommand;
 import dobby.command.UnmarkCommand;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /** Tests conversion of console input into Dobby commands. */
 class ParserTest {

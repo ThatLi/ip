@@ -1,29 +1,30 @@
 package dobby.logic;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import dobby.util.DateTimeUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import dobby.util.DateTimeUtil;
 
 /** Tests task deletion through {@link DobbyLogic}. */
 class DobbyLogicTest {
     private static final Path DATA_FILE = Path.of("data", "duke.txt");
 
-    private boolean dataFileExisted;
+    private boolean hasOriginalDataFile;
     private byte[] originalData;
     private DobbyLogic logic;
 
     /** Saves existing task data and starts each test with no saved tasks. */
     @BeforeEach
     void setUp() throws IOException {
-        dataFileExisted = Files.exists(DATA_FILE);
-        originalData = dataFileExisted ? Files.readAllBytes(DATA_FILE) : null;
+        hasOriginalDataFile = Files.exists(DATA_FILE);
+        originalData = hasOriginalDataFile ? Files.readAllBytes(DATA_FILE) : null;
         Files.deleteIfExists(DATA_FILE);
         logic = new DobbyLogic();
     }
@@ -31,7 +32,7 @@ class DobbyLogicTest {
     /** Restores the task data that was present before the test. */
     @AfterEach
     void restoreDataFile() throws IOException {
-        if (dataFileExisted) {
+        if (hasOriginalDataFile) {
             Files.createDirectories(DATA_FILE.getParent());
             Files.write(DATA_FILE, originalData);
         } else {
