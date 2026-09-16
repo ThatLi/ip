@@ -1,6 +1,9 @@
 package dobby.logic;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import dobby.storage.Storage;
 import dobby.task.Deadline;
@@ -29,12 +32,7 @@ public final class DobbyLogic {
 
     /** Returns all recorded tasks in numbered order. */
     public String showTasks() {
-        StringBuilder result = new StringBuilder();
-        result.append("> Dobby show ").append(tasks.size()).append(" tasks:\n");
-        for (int index = 0; index < tasks.size(); index++) {
-            result.append(index + 1).append(". ").append(tasks.get(index)).append("\n");
-        }
-        return result.toString();
+        return "> Dobby show " + tasks.size() + " tasks:\n" + formatNumberedTasks(tasks.asList());
     }
 
     /**
@@ -44,15 +42,17 @@ public final class DobbyLogic {
      * @return The matching tasks in numbered order.
      */
     public String findTasks(String keyword) {
-        StringBuilder result = new StringBuilder("> Here are the matching tasks in your list:\n");
-        int matchingTaskNumber = 1;
-        for (Task task : tasks.asList()) {
-            if (task.hasDescriptionContaining(keyword)) {
-                result.append(matchingTaskNumber).append(". ").append(task).append("\n");
-                matchingTaskNumber++;
-            }
-        }
-        return result.toString();
+        List<Task> matchingTasks = tasks.asList().stream()
+                .filter(task -> task.hasDescriptionContaining(keyword))
+                .toList();
+        return "> Here are the matching tasks in your list:\n" + formatNumberedTasks(matchingTasks);
+    }
+
+    /** Converts tasks into consecutively numbered display lines. */
+    private String formatNumberedTasks(List<Task> tasks) {
+        return IntStream.range(0, tasks.size())
+                .mapToObj(index -> (index + 1) + ". " + tasks.get(index) + "\n")
+                .collect(Collectors.joining());
     }
 
     /** Returns any message produced while loading saved tasks. */
