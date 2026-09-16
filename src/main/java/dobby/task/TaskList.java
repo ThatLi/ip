@@ -21,11 +21,16 @@ public class TaskList {
      * @param tasks tasks to add to this list
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "The initial task collection must exist";
+        assert tasks.stream().allMatch(task -> task != null) : "The initial task collection cannot contain null";
+
         this.tasks = new ArrayList<>(tasks);
     }
 
     /** Adds a task to the end of the list. */
     public void add(Task task) {
+        assert task != null : "A task list cannot contain null";
+
         tasks.add(task);
     }
 
