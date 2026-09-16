@@ -23,9 +23,9 @@ public class Task {
     private static final int EVENT_START_DATE_FIELD = 3;
     private static final int EVENT_END_DATE_FIELD = 4;
 
-    protected String description;
-    protected boolean isDone;
-    protected String type = " ";
+    private final String description;
+    private final String type;
+    private boolean isDone;
 
     /**
      * Creates a task with its description.
@@ -33,8 +33,7 @@ public class Task {
      * @param description Description of the task.
      */
     public Task(String description) {
-        this.description = description;
-        this.isDone = false;
+        this(description, " ");
     }
 
     /**
@@ -44,8 +43,9 @@ public class Task {
      * @param type Type of task.
      */
     public Task(String description, String type) {
-        this(description);
+        this.description = description;
         this.type = type;
+        this.isDone = false;
     }
 
     /** Marks this task as completed. */
