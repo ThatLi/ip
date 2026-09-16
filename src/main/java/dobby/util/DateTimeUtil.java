@@ -36,6 +36,8 @@ public final class DateTimeUtil {
      * @throws DobbyException if the input is not a valid supported date or time
      */
     public static ParsedDateTime parse(String input) throws DobbyException {
+        assert input != null : "Date input must originate from a parsed command or saved record";
+
         String[] parts = input.trim().split("\\s+");
         if (parts.length < 1 || parts.length > 2) {
             throw new DobbyException("Dobby needs a date with an optional time.");
@@ -100,6 +102,10 @@ public final class DateTimeUtil {
         private final boolean hasTime;
 
         private ParsedDateTime(LocalDateTime value, boolean hasTime) {
+            assert value != null : "A parsed date/time must have a value";
+            assert hasTime || value.toLocalTime().equals(LocalTime.MIDNIGHT)
+                    : "A date without an explicit time must use midnight";
+
             this.value = value;
             this.hasTime = hasTime;
         }

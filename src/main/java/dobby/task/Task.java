@@ -33,7 +33,10 @@ public class Task {
      * @param description Description of the task.
      */
     public Task(String description) {
-        this(description, " ");
+        assert description != null && !description.isBlank() : "A task must have a description";
+
+        this.description = description;
+        this.isDone = false;
     }
 
     /**
@@ -103,8 +106,18 @@ public class Task {
      * @throws DobbyException if the line does not match the save format
      */
     public static Task fromFileString(String line) throws DobbyException {
+<<<<<<< HEAD
         String[] fields = line.split(FIELD_SEPARATOR, -1);
         validateCommonFields(fields, line);
+=======
+        assert line != null : "A saved task line must come from the storage reader";
+
+        String[] fields = line.split(" \\| ", -1);
+        if (fields.length < 3 || fields[2].isBlank()
+                || !(fields[1].equals("0") || fields[1].equals("1"))) {
+            throw new DobbyException("Invalid saved task: " + line);
+        }
+>>>>>>> master
 
         Task task = createTask(fields, line);
         if (fields[STATUS_FIELD].equals(COMPLETE_STATUS)) {

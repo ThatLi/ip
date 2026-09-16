@@ -14,6 +14,11 @@ import dobby.exception.DobbyException;
 /** Tests date and time parsing used by deadline and event tasks. */
 class DateTimeUtilTest {
     @Test
+    void parse_nullInput_assertionError() {
+        assertThrows(AssertionError.class, () -> DateTimeUtil.parse(null));
+    }
+
+    @Test
     void parse_isoDate_returnsStartOfDayWithoutTime() throws DobbyException {
         DateTimeUtil.ParsedDateTime parsed = DateTimeUtil.parse("2019-12-03");
 

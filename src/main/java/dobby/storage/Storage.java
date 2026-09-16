@@ -27,6 +27,9 @@ public class Storage {
 
         /** Creates a result containing valid tasks and the invalid-row count. */
         private LoadResult(List<Task> tasks, int invalidTaskCount) {
+            assert tasks != null : "Loaded tasks must be collected before creating a result";
+            assert invalidTaskCount >= 0 : "An invalid-task count cannot be negative";
+
             this.tasks = tasks;
             this.invalidTaskCount = invalidTaskCount;
         }
@@ -49,6 +52,9 @@ public class Storage {
      * @throws IOException if the data directory or file cannot be written
      */
     public void save(List<Task> tasks) throws IOException {
+        assert tasks != null : "Tasks must be supplied by the application task list";
+        assert tasks.stream().allMatch(task -> task != null) : "Saved tasks cannot contain null";
+
         Files.createDirectories(DATA_FILE.getParent());
         List<String> lines = tasks.stream().map(Task::toFileString).toList();
         Files.write(DATA_FILE, lines);
