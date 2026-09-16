@@ -40,11 +40,11 @@ public final class DobbyLogic {
     /**
      * Returns tasks whose descriptions contain the specified keyword, ignoring letter case.
      *
-     * @param keyword text to find in task descriptions
-     * @return the matching tasks in numbered order
+     * @param keyword Text to find in task descriptions.
+     * @return The matching tasks in numbered order.
      */
     public String findTasks(String keyword) {
-        StringBuilder result = new StringBuilder("> Dobby show all tasks that has the word \"" + keyword + "\":\n");
+        StringBuilder result = new StringBuilder("> Here are the matching tasks in your list:\n");
         int matchingTaskNumber = 1;
         for (Task task : tasks.asList()) {
             if (task.hasDescriptionContaining(keyword)) {

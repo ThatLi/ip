@@ -83,7 +83,7 @@ class DobbyLogicTest {
 
         String result = logic.findTasks("book");
 
-        assertEquals("> Dobby show all tasks that has the word \"book\":\n"
+        assertEquals("> Here are the matching tasks in your list:\n"
                 + "1. [T][ ] read book\n"
                 + "2. [D][ ] return BOOK (by: Dec 02 2019)\n", result);
     }
@@ -92,7 +92,7 @@ class DobbyLogicTest {
     void findTasks_noMatchingKeyword_returnsOnlyHeading() {
         logic.createToDo("read book");
 
-        assertEquals("> Dobby show all tasks that has the word \"meeting\":\n", logic.findTasks("meeting"));
+        assertEquals("> Here are the matching tasks in your list:\n", logic.findTasks("meeting"));
     }
 
     @Test
