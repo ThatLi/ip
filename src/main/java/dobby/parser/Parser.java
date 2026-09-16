@@ -42,9 +42,7 @@ public final class Parser {
             case "event" -> event(tokens);
             case "find" -> tokens.length > 1 ? new FindCommand(join(tokens, 1, tokens.length))
                     : invalid("> Dobby is confused. Dobby think you meant 'find <keyword>'");
-            case "mark" -> numbered(tokens, true, false);
-            case "unmark" -> numbered(tokens, false, false);
-            case "delete" -> numbered(tokens, false, true);
+            case "mark", "unmark", "delete" -> numbered(tokens);
             default -> invalid(" > Dobby asks is this a Todo, Deadline, or Event?");
         };
     }
@@ -53,8 +51,6 @@ public final class Parser {
      * Creates a command that operates on one numbered task.
      *
      * @param tokens command input split into tokens
-     * @param isMark whether to create a mark command
-     * @param isDelete whether to create a delete command
      * @return the requested command, or an invalid command when the number is invalid
      */
     private static Command numbered(String[] tokens, boolean isMark, boolean isDelete) {
@@ -65,8 +61,12 @@ public final class Parser {
         }
         try {
             int taskNumber = parseTaskNumber(tokens[1]);
-            return isDelete ? new DeleteCommand(taskNumber)
-                    : (isMark ? new MarkCommand(taskNumber) : new UnmarkCommand(taskNumber));
+            return switch (tokens[0].toLowerCase()) {
+                case "mark" -> new MarkCommand(taskNumber);
+                case "unmark" -> new UnmarkCommand(taskNumber);
+                case "delete" -> new DeleteCommand(taskNumber);
+                default -> throw new IllegalArgumentException("Unsupported numbered command: " + tokens[0]);
+            };
         } catch (DobbyException e) {
             return invalid(e.getMessage());
         }
