@@ -28,6 +28,16 @@ public class Dobby {
     }
 
     /**
+     * Returns whether a user command requests that Dobby exit.
+     *
+     * @param input User command to inspect.
+     * @return {@code true} when the command should close the application.
+     */
+    public boolean isExitCommand(String input) {
+        return Parser.parse(input).isExit();
+    }
+
+    /**
      * Displays a welcome banner when the chatbot starts.
      *
      * @param args command-line arguments (not used)

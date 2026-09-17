@@ -1,6 +1,7 @@
 package dobby.ui.gui;
 
 import dobby.Dobby;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -43,6 +44,12 @@ public class MainWindow extends AnchorPane {
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        if (dobby.isExitCommand(input)) {
+            userInput.clear();
+            Platform.exit();
+            return;
+        }
+
         String response = dobby.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),

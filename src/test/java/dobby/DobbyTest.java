@@ -1,6 +1,8 @@
 package dobby;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,5 +49,11 @@ class DobbyTest {
     @Test
     void getResponse_exitCommand_returnsGoodbyeMessage() {
         assertEquals("> Dobby says goodbye to master!", dobby.getResponse("bye"));
+    }
+
+    @Test
+    void isExitCommand_exitAndNonExitCommands_returnsMatchingStatus() {
+        assertTrue(dobby.isExitCommand("bye"));
+        assertFalse(dobby.isExitCommand("list"));
     }
 }
