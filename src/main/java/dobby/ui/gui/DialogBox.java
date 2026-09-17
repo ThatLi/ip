@@ -1,9 +1,12 @@
 package dobby.ui.gui;
 
+import java.io.IOException;
 import java.util.Collections;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -15,7 +18,10 @@ import javafx.scene.layout.HBox;
  * Displays a chat message beside an avatar.
  */
 public class DialogBox extends HBox {
-    private static final double AVATAR_SIZE = 100.0;
+    @FXML
+    private Label dialog;
+    @FXML
+    private ImageView displayPicture;
 
     /**
      * Creates a right-aligned chat message.
@@ -24,14 +30,16 @@ public class DialogBox extends HBox {
      * @param image Avatar representing the speaker.
      */
     private DialogBox(String message, Image image) {
-        Label text = new Label(message);
-        ImageView displayPicture = new ImageView(image);
-
-        text.setWrapText(true);
-        displayPicture.setFitWidth(AVATAR_SIZE);
-        displayPicture.setFitHeight(AVATAR_SIZE);
-        setAlignment(Pos.TOP_RIGHT);
-        getChildren().addAll(text, displayPicture);
+        FXMLLoader fxmlLoader = new FXMLLoader(DialogBox.class.getResource("/view/DialogBox.fxml"));
+        fxmlLoader.setController(this);
+        fxmlLoader.setRoot(this);
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load dialog layout", e);
+        }
+        dialog.setText(message);
+        displayPicture.setImage(image);
     }
 
     /** Flips the dialog so Dobby's avatar appears on the left. */
