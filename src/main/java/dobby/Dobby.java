@@ -9,6 +9,24 @@ import dobby.ui.cli.Ui;
  * Starts the Dobby chatbot application.
  */
 public class Dobby {
+    private final DobbyLogic logic;
+
+    /** Creates a Dobby instance backed by the saved task list. */
+    public Dobby() {
+        logic = new DobbyLogic();
+    }
+
+    /**
+     * Executes one user command and returns Dobby's response.
+     *
+     * @param input User command to execute.
+     * @return Dobby's response to the command.
+     */
+    public String getResponse(String input) {
+        Command command = Parser.parse(input);
+        return command.isExit() ? "> Dobby says goodbye to master!" : command.execute(logic);
+    }
+
     /**
      * Displays a welcome banner when the chatbot starts.
      *

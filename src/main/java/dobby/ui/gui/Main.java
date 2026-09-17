@@ -1,5 +1,6 @@
 package dobby.ui.gui;
 
+import dobby.Dobby;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,12 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     private final Image userImage = new Image(getClass().getResourceAsStream("/images/DaUser.png"));
+    private final Image dobbyImage = new Image(getClass().getResourceAsStream("/images/DaDobby.png"));
+    private final Dobby dobby = new Dobby();
+
+    private ScrollPane scrollPane;
+    private VBox dialogContainer;
+    private TextField userInput;
 
     /**
      * Creates and displays the primary application window.
@@ -24,20 +31,33 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        ScrollPane scrollPane = new ScrollPane();
-        VBox dialogContainer = new VBox();
+        scrollPane = new ScrollPane();
+        dialogContainer = new VBox();
         scrollPane.setContent(dialogContainer);
 
-        TextField userInput = new TextField();
+        userInput = new TextField();
         Button sendButton = new Button("Send");
-        dialogContainer.getChildren().add(new DialogBox("Hello!", userImage));
 
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
 
         configureLayout(stage, mainLayout, scrollPane, dialogContainer, userInput, sendButton);
+        sendButton.setOnAction(event -> handleUserInput());
+        userInput.setOnAction(event -> handleUserInput());
+        dialogContainer.heightProperty().addListener(observable -> scrollPane.setVvalue(1.0));
+
         stage.setScene(new Scene(mainLayout));
         stage.show();
+    }
+
+    /** Adds the user's message and Dobby's response, then clears the input field. */
+    private void handleUserInput() {
+        String input = userInput.getText();
+        String response = dobby.getResponse(input);
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getDobbyDialog(response, dobbyImage));
+        userInput.clear();
     }
 
     /** Configures the fixed-size layout used by the initial GUI prototype. */
