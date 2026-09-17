@@ -1,49 +1,59 @@
 # Dobby User Guide
 
-// Update the title above to match the actual product name
+Dobby is a friendly desktop chatbot that helps you keep track of todos, deadlines, and events. Type a command in the message box and press **Enter** to send it.
 
-// Product screenshot goes here
+## Getting started
 
-// Product intro goes here
+Try these commands:
 
-## Command reference
+1. Add a task with `todo read book`.
+2. View your tasks with `list`.
+3. Complete it with `mark 1`, where `1` is its number in the list.
 
-Enter `help` to display this command reference inside Dobby. Command names are case-insensitive.
+Type `help` at any time to see Dobby's command summary.
 
-- `todo <description>` — Adds a todo task.
-- `deadline <description> /by <date/time>` — Adds a task with a deadline.
-- `event <description> /from <date/time> /to <date/time>` — Adds an event.
-- `list` — Shows all tasks.
-- `find <search text>` — Shows tasks with descriptions containing the search text.
-- `mark <task number>` — Marks a task as done.
-- `unmark <task number>` — Marks a task as not done.
-- `delete <task number>` — Deletes a task.
-- `help` — Shows the in-app command guide.
-- `bye` — Exits Dobby.
+## Features
 
-Dates can use `yyyy-MM-dd` or `d/M/yyyy`. An optional 24-hour time can use `HHmm` or `HH:mm`.
+### Add tasks
 
-For example: `deadline return book /by 2019-12-02 1800`
+| Task type | Format | Example |
+| --- | --- | --- |
+| Todo | `todo DESCRIPTION` | `todo read book` |
+| Deadline | `deadline DESCRIPTION /by DATE [TIME]` | `deadline return book /by 2019-12-02 1800` |
+| Event | `event DESCRIPTION /from DATE [TIME] /to DATE [TIME]` | `event project meeting /from 2/12/2019 14:00 /to 2/12/2019 1600` |
 
-## Adding deadlines
+Use `yyyy-MM-dd` or `d/M/yyyy` for dates. Times are optional and use the 24-hour `HHmm` or `HH:mm` format.
 
-// Describe the action and its outcome.
+### View and find tasks
 
-// Give examples of usage
+- `list` shows all tasks and their numbers.
+- `find SEARCH_TEXT` shows tasks whose descriptions contain the given text. The search is case-insensitive; for example, `find book` matches `Read Book`.
 
-Example: `keyword (optional arguments)`
+### Update or delete tasks
 
-// A description of the expected outcome goes here
+Run `list` to check a task's number, then use:
 
-```
-expected output
-```
+- `mark TASK_NUMBER` to mark it as done, e.g. `mark 2`.
+- `unmark TASK_NUMBER` to mark it as not done, e.g. `unmark 2`.
+- `delete TASK_NUMBER` to remove it, e.g. `delete 2`.
 
-## Feature ABC
+Task numbers can change after a task is deleted, so run `list` again before your next update.
 
-// Feature details
+### Save and exit
 
+Dobby saves your tasks automatically after every change and loads them the next time it starts. Enter `bye` to close Dobby.
 
-## Feature XYZ
+## Command summary
 
-// Feature details
+| Command | Purpose |
+| --- | --- |
+| `todo DESCRIPTION` | Add a todo |
+| `deadline DESCRIPTION /by DATE [TIME]` | Add a deadline |
+| `event DESCRIPTION /from DATE [TIME] /to DATE [TIME]` | Add an event |
+| `list` | Show all tasks |
+| `find SEARCH_TEXT` | Find tasks by description |
+| `mark TASK_NUMBER` | Mark a task as done |
+| `unmark TASK_NUMBER` | Mark a task as not done |
+| `delete TASK_NUMBER` | Delete a task |
+| `help` | Show help in Dobby |
+| `bye` | Exit Dobby |
