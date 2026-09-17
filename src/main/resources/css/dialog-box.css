@@ -1,20 +1,18 @@
 .label {
-    -fx-background-color: linear-gradient(to bottom right, #f4d9a7, #e9bd78);
-    -fx-background-radius: 1em 1em 0 1em;
-    -fx-border-color: #9d713d;
-    -fx-border-radius: 1em 1em 0 1em;
-    -fx-border-width: 1px;
-    -fx-font-size: 14px;
-    -fx-padding: 6px;
+    -fx-background-color: #1265ee;
+    -fx-background-radius: 18px 18px 4px 18px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 9px 13px;
+    -fx-text-fill: white;
 }
 
 .reply-label {
-    -fx-background-color: linear-gradient(to bottom right, #d8ead2, #b6d7ac);
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-color: #66865d;
-    -fx-border-radius: 1em 1em 1em 0;
+    -fx-background-color: #f3f3f3;
+    -fx-background-radius: 18px 18px 18px 4px;
+    -fx-text-fill: #343434;
 }
 
 #displayPicture {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 3, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 8, 0.25, 1, 2);
 }

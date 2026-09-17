@@ -13,6 +13,11 @@ import javafx.stage.Stage;
  * Displays Dobby's JavaFX user interface.
  */
 public class Main extends Application {
+    private static final double DEFAULT_WIDTH = 620.0;
+    private static final double DEFAULT_HEIGHT = 820.0;
+    private static final double MINIMUM_WIDTH = 520.0;
+    private static final double MINIMUM_HEIGHT = 680.0;
+
     private final Dobby dobby = new Dobby();
 
     /**
@@ -27,9 +32,11 @@ public class Main extends Application {
         MainWindow mainWindow = fxmlLoader.getController();
         mainWindow.setDobby(dobby);
 
-        stage.setTitle("Dobby");
-        stage.setMinHeight(220.0);
-        stage.setMinWidth(417.0);
+        stage.setTitle("Knock Knock - Dobby");
+        stage.setWidth(DEFAULT_WIDTH);
+        stage.setHeight(DEFAULT_HEIGHT);
+        stage.setMinWidth(MINIMUM_WIDTH);
+        stage.setMinHeight(MINIMUM_HEIGHT);
         stage.setScene(new Scene(mainLayout));
         stage.show();
     }

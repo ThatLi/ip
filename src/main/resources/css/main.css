@@ -1,48 +1,121 @@
-.root {
-    main-color: #f4f1ea;
-    accent-color: #7b5e47;
-    -fx-background-color: main-color;
+.app-shell {
+    -fx-background-color:
+            linear-gradient(from 0% 0% to 100% 100%, rgba(255, 255, 255, 0.05), transparent 42%),
+            linear-gradient(from 100% 0% to 0% 100%, #292929, #121212 68%);
     -fx-font-family: "Arial";
 }
 
-.text-field {
-    -fx-background-color: #fffdf8;
-    -fx-border-color: derive(accent-color, 35%);
-    -fx-font-size: 16px;
+.header-bar {
+    -fx-background-color: linear-gradient(to right, #080808, #151515);
+    -fx-background-radius: 16px 16px 6px 6px;
+    -fx-border-color: #3d3d3d;
+    -fx-border-radius: 16px 16px 6px 6px;
+    -fx-border-width: 1px;
 }
 
-.button {
-    -fx-background-color: accent-color;
+.brand-icon {
+    -fx-text-fill: #ffe600;
+    -fx-font-size: 31px;
+    -fx-font-weight: 900;
+    -fx-rotate: -8deg;
+}
+
+.header-title {
     -fx-text-fill: white;
-    -fx-font-size: 15px;
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+}
+
+.system-badge {
+    -fx-background-color: #ffe600;
+    -fx-background-radius: 14px;
+    -fx-padding: 5px 11px;
+    -fx-text-fill: #111111;
+    -fx-font-size: 11px;
     -fx-font-weight: bold;
 }
 
-.button:hover {
-    -fx-background-color: derive(accent-color, 20%);
+.contact-bar {
+    -fx-background-color: rgba(5, 5, 5, 0.86);
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: transparent transparent #343434 transparent;
+    -fx-border-width: 0 0 2px 0;
 }
 
-.button:pressed {
-    -fx-background-color: derive(accent-color, -15%);
+.status-dot {
+    -fx-text-fill: #ffe600;
+    -fx-font-size: 17px;
 }
 
-.scroll-pane,
-.scroll-pane .viewport {
+.contact-name {
+    -fx-text-fill: white;
+    -fx-font-size: 17px;
+    -fx-font-weight: 900;
+}
+
+.online-label {
+    -fx-text-fill: #a8d600;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.chat-panel,
+.chat-panel .viewport {
+    -fx-background-color: rgba(2, 2, 2, 0.74);
+}
+
+.chat-panel {
+    -fx-background-radius: 0 0 10px 10px;
+    -fx-border-color: #303030;
+    -fx-border-radius: 0 0 10px 10px;
+    -fx-border-width: 0 1px 1px 1px;
+    -fx-padding: 8px 2px 10px 2px;
+}
+
+.dialog-container {
+    -fx-padding: 8px 4px 16px 4px;
+}
+
+.composer-field {
+    -fx-background-color: #0a0a0a;
+    -fx-background-radius: 9px 0 0 9px;
+    -fx-border-color: #3d3d3d;
+    -fx-border-radius: 9px 0 0 9px;
+    -fx-font-size: 15px;
+    -fx-prompt-text-fill: #767676;
+    -fx-text-fill: white;
+}
+
+.send-button {
+    -fx-background-color: #ffe600;
+    -fx-background-radius: 0 9px 9px 0;
+    -fx-border-color: #ffe600;
+    -fx-border-radius: 0 9px 9px 0;
+    -fx-font-size: 15px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #111111;
+}
+
+.send-button:hover {
+    -fx-background-color: #fff36a;
+}
+
+.send-button:pressed {
+    -fx-background-color: #d6c200;
+}
+
+.scroll-bar:vertical {
     -fx-background-color: transparent;
-}
-
-.scroll-bar {
-    -fx-font-size: 10px;
-    -fx-background-color: main-color;
+    -fx-pref-width: 8px;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: derive(accent-color, 45%);
-    -fx-background-radius: 1em;
+    -fx-background-color: #555555;
+    -fx-background-radius: 4px;
 }
 
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
-    -fx-pref-height: 0;
     -fx-opacity: 0;
+    -fx-pref-height: 0;
 }
