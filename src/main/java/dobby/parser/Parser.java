@@ -53,9 +53,7 @@ public final class Parser {
      * @param tokens command input split into tokens
      * @return the requested command, or an invalid command when the number is invalid
      */
-    private static Command numbered(String[] tokens, boolean isMark, boolean isDelete) {
-        assert !(isMark && isDelete) : "A numbered command cannot be both mark and delete";
-
+    private static Command numbered(String[] tokens) {
         if (tokens.length != 2) {
             return invalid("> Dobby is confused. Dobby think you meant '" + tokens[0] + " <Task number>'");
         }
