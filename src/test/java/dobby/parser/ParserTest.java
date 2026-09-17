@@ -14,6 +14,7 @@ import dobby.command.DeleteCommand;
 import dobby.command.EventCommand;
 import dobby.command.ExitCommand;
 import dobby.command.FindCommand;
+import dobby.command.HelpCommand;
 import dobby.command.InvalidCommand;
 import dobby.command.ListCommand;
 import dobby.command.MarkCommand;
@@ -30,6 +31,16 @@ class ParserTest {
     @Test
     void parse_listCommand_returnsListCommand() {
         assertInstanceOf(ListCommand.class, Parser.parse("  LIST  "));
+    }
+
+    @Test
+    void parse_helpCommandWithDifferentCaseAndWhitespace_returnsHelpCommand() {
+        assertInstanceOf(HelpCommand.class, Parser.parse("  HELP  "));
+    }
+
+    @Test
+    void parse_helpCommandWithAdditionalArgument_returnsHelpfulError() {
+        assertInvalidMessage("help todo", "> Dobby is confused. Dobby think you meant 'help'");
     }
 
     @Test
@@ -115,7 +126,8 @@ class ParserTest {
     @Test
     void parse_blankOrUnknownInput_returnsHelpfulError() {
         assertInvalidMessage("   ", "> Dobby couldn't hear you. Dobby want you to speak louder!");
-        assertInvalidMessage("remind me", " > Dobby asks is this a Todo, Deadline, or Event?");
+        assertInvalidMessage("remind me", " > Dobby asks is this a Todo, Deadline, or Event?\n"
+                + "> Dobby recommend whisper 'help' so that Dobby can help you!");
     }
 
     /** Verifies the error reported by an invalid parsed command. */

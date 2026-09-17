@@ -6,6 +6,7 @@ import dobby.command.DeleteCommand;
 import dobby.command.EventCommand;
 import dobby.command.ExitCommand;
 import dobby.command.FindCommand;
+import dobby.command.HelpCommand;
 import dobby.command.InvalidCommand;
 import dobby.command.ListCommand;
 import dobby.command.MarkCommand;
@@ -30,12 +31,16 @@ public final class Parser {
         if (trimmedInput.equalsIgnoreCase("list")) {
             return new ListCommand();
         }
+        if (trimmedInput.equalsIgnoreCase("help")) {
+            return new HelpCommand();
+        }
         if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         }
         String[] tokens = trimmedInput.split("\\s+"); // '\s+' matches 1 or more whitespace(s)
         return switch (tokens[0].toLowerCase()) {
             case "list" -> invalid("> Dobby is confused. Dobby think you meant 'list'");
+            case "help" -> invalid("> Dobby is confused. Dobby think you meant 'help'");
             case "todo" -> tokens.length > 1 ? new TodoCommand(join(tokens, 1, tokens.length))
                     : invalid("> Dobby is confused. Dobby think you meant 'todo <description>'");
             case "deadline" -> deadline(tokens);
@@ -43,7 +48,8 @@ public final class Parser {
             case "find" -> tokens.length > 1 ? new FindCommand(join(tokens, 1, tokens.length))
                     : invalid("> Dobby is confused. Dobby think you meant 'find <keyword>'");
             case "mark", "unmark", "delete" -> numbered(tokens);
-            default -> invalid(" > Dobby asks is this a Todo, Deadline, or Event?");
+            default -> invalid(" > Dobby asks is this a Todo, Deadline, or Event?\n"
+                    + "> Dobby recommend whisper 'help' so that Dobby can help you!");
         };
     }
 

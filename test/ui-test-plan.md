@@ -1,6 +1,7 @@
 # Level-6 UI test plan
 
 These tests cover creating the three supported task types, listing tasks, marking and unmarking a task, and saving and loading task-list changes through `data/duke.txt`.
+They also cover in-app command guidance and discovery after an unknown command.
 
 ## Create, list, mark, and unmark dated tasks
 
@@ -74,6 +75,75 @@ Tell Dobby: ____________________________________________________________
 1. [T][ ] read book
 2. [D][ ] return book (by: Dec 02 2019, 18:00)
 3. [E][ ] project meeting (from: Dec 03 2019, 09:00 to: Dec 03 2019, 11:00)
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+```
+
+## Show help and suggest it after an unknown command
+
+**Aim:** Confirm that `help` lists every supported command and date format without changing task state, and that an unknown command directs the user to help.
+
+**Command:**
+```text
+cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
+```
+
+**Input:**
+```text
+todo read book
+help
+remind me
+list
+bye
+```
+
+**Expected output:**
+```text
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby noted a new Todo: read book
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby can help with these commands:
+Create tasks:
+  todo <description> - Add a todo task.
+  deadline <description> /by <date/time> - Add a task with a deadline.
+  event <description> /from <date/time> /to <date/time> - Add an event.
+View tasks:
+  list - Show all tasks.
+  find <search text> - Show tasks matching text.
+Update tasks:
+  mark <task number> - Mark a task as done.
+  unmark <task number> - Mark a task as not done.
+  delete <task number> - Delete a task.
+Other:
+  help - Show this help page.
+  bye - Exit Dobby.
+Dates: use yyyy-MM-dd or d/M/yyyy. Times are optional; use HHmm or HH:mm.
+Example: deadline return book /by 2019-12-02 1800
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+ > Dobby asks is this a Todo, Deadline, or Event?
+> Dobby recommend whisper 'help' so that Dobby can help you!
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 1 tasks:
+1. [T][ ] read book
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
