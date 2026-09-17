@@ -42,7 +42,7 @@ public class DialogBox extends HBox {
         } catch (IOException e) {
             throw new IllegalStateException("Unable to load dialog layout", e);
         }
-        dialog.setText(message);
+        dialog.setText(message.stripTrailing());
         if (image == null) {
             getChildren().remove(displayPicture);
         } else {
