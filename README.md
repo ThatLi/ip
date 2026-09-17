@@ -41,3 +41,12 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## Media credits
+
+- `DobbyProfile.jpg` is adapted for circular display from
+  [Dobby 2](https://commons.wikimedia.org/wiki/File:Dobby_2.jpg), a photograph by
+  [NobbiP](https://commons.wikimedia.org/wiki/User:NobbiP), licensed under
+  [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
+- `DaUser.png` is reused from the
+  [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart2.html).

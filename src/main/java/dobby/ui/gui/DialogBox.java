@@ -8,11 +8,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  * Displays a chat message beside an avatar.
@@ -39,7 +41,19 @@ public class DialogBox extends HBox {
             throw new IllegalStateException("Unable to load dialog layout", e);
         }
         dialog.setText(message);
+        setDisplayPicture(image);
+    }
+
+    /** Crops and clips a speaker image into the circular portrait used by the chat UI. */
+    private void setDisplayPicture(Image image) {
+        double cropSize = Math.min(image.getWidth(), image.getHeight());
+        double cropX = (image.getWidth() - cropSize) / 2;
+        double cropY = (image.getHeight() - cropSize) / 2;
+        double clipRadius = Math.min(displayPicture.getFitWidth(), displayPicture.getFitHeight()) / 2;
+
         displayPicture.setImage(image);
+        displayPicture.setViewport(new Rectangle2D(cropX, cropY, cropSize, cropSize));
+        displayPicture.setClip(new Circle(clipRadius, clipRadius, clipRadius));
     }
 
     /** Flips the dialog so Dobby's avatar appears on the left. */
