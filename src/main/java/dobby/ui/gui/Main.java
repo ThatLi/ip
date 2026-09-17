@@ -28,9 +28,8 @@ public class Main extends Application {
         mainWindow.setDobby(dobby);
 
         stage.setTitle("Dobby");
-        stage.setResizable(false);
-        stage.setMinHeight(600.0);
-        stage.setMinWidth(400.0);
+        stage.setMinHeight(220.0);
+        stage.setMinWidth(417.0);
         stage.setScene(new Scene(mainLayout));
         stage.show();
     }
