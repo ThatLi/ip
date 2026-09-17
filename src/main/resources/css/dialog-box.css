@@ -9,8 +9,12 @@
 
 .reply-label {
     -fx-background-color: #f3f3f3;
-    -fx-background-radius: 18px 18px 18px 4px;
+    -fx-background-radius: 18px;
     -fx-text-fill: #343434;
+}
+
+.reply-tail {
+    -fx-fill: #f3f3f3;
 }
 
 #displayPicture {

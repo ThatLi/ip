@@ -126,7 +126,7 @@ class ParserTest {
     @Test
     void parse_blankOrUnknownInput_returnsHelpfulError() {
         assertInvalidMessage("   ", "> Dobby couldn't hear you. Dobby want you to speak louder!");
-        assertInvalidMessage("remind me", " > Dobby asks is this a Todo, Deadline, or Event?\n"
+        assertInvalidMessage("remind me", "> Dobby asks is this a Todo, Deadline, or Event?\n"
                 + "> Dobby recommend whisper 'help' so that Dobby can help you!");
     }
 

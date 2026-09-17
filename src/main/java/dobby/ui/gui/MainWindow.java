@@ -18,8 +18,7 @@ import javafx.util.Duration;
 public class MainWindow extends AnchorPane {
     private static final double EXIT_DELAY_SECONDS = 3.0;
 
-    private final Image userImage = new Image(getClass().getResourceAsStream("/images/DaUser.png"));
-    private final Image dobbyImage = new Image(getClass().getResourceAsStream("/images/DobbyProfile.jpg"));
+    private final Image dobbyImage = new Image(getClass().getResourceAsStream("/images/DobbyProfile.png"));
 
     @FXML
     private ScrollPane scrollPane;
@@ -54,7 +53,7 @@ public class MainWindow extends AnchorPane {
         boolean isExitCommand = dobby.isExitCommand(input);
         String response = dobby.getResponse(input);
         dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getUserDialog(input),
                 DialogBox.getDobbyDialog(response, dobbyImage));
         userInput.clear();
 

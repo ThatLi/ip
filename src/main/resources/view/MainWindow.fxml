@@ -13,7 +13,7 @@
 <AnchorPane prefHeight="820.0" prefWidth="620.0"
             styleClass="app-shell"
             stylesheets="@../css/main.css"
-            xmlns="http://javafx.com/javafx/17"
+            xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="dobby.ui.gui.MainWindow">
     <children>
@@ -28,7 +28,7 @@
                 <Insets left="18.0" right="18.0" />
             </padding>
             <children>
-                <Label styleClass="brand-icon" text="▣" />
+                <Label styleClass="brand-icon" text="🧦" />
                 <Label styleClass="header-title" text="KNOCK KNOCK" />
                 <Pane HBox.hgrow="ALWAYS" />
                 <Label styleClass="system-badge" text="DOBBY OS" />
@@ -45,7 +45,7 @@
                 <Insets left="14.0" right="14.0" />
             </padding>
             <children>
-                <Label styleClass="status-dot" text="●" />
+                <Label styleClass="chat-icon" text="🗨" />
                 <Label styleClass="contact-name" text="Dobby" />
                 <Pane HBox.hgrow="ALWAYS" />
                 <Label styleClass="online-label" text="ONLINE" />

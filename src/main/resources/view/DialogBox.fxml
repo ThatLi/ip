@@ -11,7 +11,7 @@
          prefWidth="580.0"
          stylesheets="@../css/dialog-box.css"
          type="javafx.scene.layout.HBox"
-         xmlns="http://javafx.com/javafx/17"
+         xmlns="http://javafx.com/javafx/25"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="dialog"

@@ -48,7 +48,7 @@ public final class Parser {
             case "find" -> tokens.length > 1 ? new FindCommand(join(tokens, 1, tokens.length))
                     : invalid("> Dobby is confused. Dobby think you meant 'find <keyword>'");
             case "mark", "unmark", "delete" -> numbered(tokens);
-            default -> invalid(" > Dobby asks is this a Todo, Deadline, or Event?\n"
+            default -> invalid("> Dobby asks is this a Todo, Deadline, or Event?\n"
                     + "> Dobby recommend whisper 'help' so that Dobby can help you!");
         };
     }

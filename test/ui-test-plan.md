@@ -138,7 +138,7 @@ Dates: use yyyy-MM-dd or d/M/yyyy. Times are optional; use HHmm or HH:mm.
 Example: deadline return book /by 2019-12-02 1800
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
- > Dobby asks is this a Todo, Deadline, or Event?
+> Dobby asks is this a Todo, Deadline, or Event?
 > Dobby recommend whisper 'help' so that Dobby can help you!
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________

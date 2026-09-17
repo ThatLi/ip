@@ -44,7 +44,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 
 ## Media credits
 
-- `DobbyProfile.jpg` is adapted for circular display from
+- `DobbyProfile.png` is adapted for circular display from
   [Dobby 2](https://commons.wikimedia.org/wiki/File:Dobby_2.jpg), a photograph by
   [NobbiP](https://commons.wikimedia.org/wiki/User:NobbiP), licensed under
   [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
