@@ -74,7 +74,8 @@
                    AnchorPane.bottomAnchor="18.0"
                    AnchorPane.leftAnchor="18.0"
                    AnchorPane.rightAnchor="120.0" />
-        <Button mnemonicParsing="false"
+        <Button fx:id="sendButton"
+                mnemonicParsing="false"
                 onAction="#handleUserInput"
                 prefHeight="52.0"
                 prefWidth="92.0"
