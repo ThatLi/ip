@@ -14,7 +14,9 @@ import dobby.task.Task;
  */
 public class Storage {
     /** Relative location of the task data file. */
-    private static final Path DATA_FILE = Path.of("data", "duke.txt");
+    private static final Path DATA_FILE = Path.of("data", "dobby.txt");
+    /** Previous starter-template location, read only when the Dobby data file does not exist. */
+    private static final Path LEGACY_DATA_FILE = Path.of("data", "duke.txt");
 
     /**
      * Contains the valid tasks loaded from disk and the number of ignored invalid rows.
@@ -68,11 +70,12 @@ public class Storage {
      */
     public LoadResult load() throws IOException {
         List<Task> tasks = new ArrayList<>();
-        if (!Files.exists(DATA_FILE)) {
+        Path sourceFile = Files.exists(DATA_FILE) ? DATA_FILE : LEGACY_DATA_FILE;
+        if (!Files.exists(sourceFile)) {
             return new LoadResult(tasks, 0);
         }
         int invalidTaskCount = 0;
-        for (String line : Files.readAllLines(DATA_FILE)) {
+        for (String line : Files.readAllLines(sourceFile)) {
             if (!line.isBlank()) {
                 try {
                     tasks.add(Task.fromFileString(line));
@@ -80,6 +83,9 @@ public class Storage {
                     invalidTaskCount++;
                 }
             }
+        }
+        if (sourceFile.equals(LEGACY_DATA_FILE)) {
+            save(tasks);
         }
         return new LoadResult(tasks, invalidTaskCount);
     }

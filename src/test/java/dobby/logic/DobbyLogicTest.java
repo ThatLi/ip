@@ -5,19 +5,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import dobby.task.Recurrence;
 import dobby.util.DateTimeUtil;
 
 /** Tests task deletion through {@link DobbyLogic}. */
 class DobbyLogicTest {
-    private static final Path DATA_FILE = Path.of("data", "duke.txt");
+    private static final Path DATA_FILE = Path.of("data", "dobby.txt");
+    private static final Path LEGACY_DATA_FILE = Path.of("data", "duke.txt");
 
     private boolean hasOriginalDataFile;
     private byte[] originalData;
+    private boolean hasOriginalLegacyDataFile;
+    private byte[] originalLegacyData;
     private DobbyLogic logic;
 
     /** Saves existing task data and starts each test with no saved tasks. */
@@ -25,7 +30,10 @@ class DobbyLogicTest {
     void setUp() throws IOException {
         hasOriginalDataFile = Files.exists(DATA_FILE);
         originalData = hasOriginalDataFile ? Files.readAllBytes(DATA_FILE) : null;
+        hasOriginalLegacyDataFile = Files.exists(LEGACY_DATA_FILE);
+        originalLegacyData = hasOriginalLegacyDataFile ? Files.readAllBytes(LEGACY_DATA_FILE) : null;
         Files.deleteIfExists(DATA_FILE);
+        Files.deleteIfExists(LEGACY_DATA_FILE);
         logic = new DobbyLogic();
     }
 
@@ -37,6 +45,12 @@ class DobbyLogicTest {
             Files.write(DATA_FILE, originalData);
         } else {
             Files.deleteIfExists(DATA_FILE);
+        }
+        if (hasOriginalLegacyDataFile) {
+            Files.createDirectories(LEGACY_DATA_FILE.getParent());
+            Files.write(LEGACY_DATA_FILE, originalLegacyData);
+        } else {
+            Files.deleteIfExists(LEGACY_DATA_FILE);
         }
     }
 
@@ -55,6 +69,16 @@ class DobbyLogicTest {
         assertEquals("", logic.getStartupMessage());
         assertEquals("> Dobby show 2 tasks:\n1. [T][ ] read book\n"
                 + "2. [D][X] return book (by: Dec 02 2019, 18:00)\n", logic.showTasks());
+    }
+
+    @Test
+    void constructor_legacyDataFile_importsTasksIntoDobbyDataFile() throws IOException {
+        Files.writeString(LEGACY_DATA_FILE, "T | 0 | migrated task\n");
+
+        logic = new DobbyLogic();
+
+        assertEquals("> Dobby show 1 tasks:\n1. [T][ ] migrated task\n", logic.showTasks());
+        assertEquals(List.of("T | 0 | migrated task"), Files.readAllLines(DATA_FILE));
     }
 
     @Test
@@ -112,6 +136,15 @@ class DobbyLogicTest {
     }
 
     @Test
+    void createDeadline_recurring_addsDeadlineWithRecurrence() throws Exception {
+        String result = logic.createDeadline("pay rent", DateTimeUtil.parse("2026-10-01"), Recurrence.MONTH);
+
+        assertEquals("> Dobby noted a new Deadline: pay rent by Oct 01 2026, every month", result);
+        assertEquals("> Dobby show 1 tasks:\n1. [D][ ] pay rent (by: Oct 01 2026, every month)\n",
+                logic.showTasks());
+    }
+
+    @Test
     void createEvent_dateOnly_addsEventWithDateDisplay() throws Exception {
         String result = logic.createEvent("project meeting", DateTimeUtil.parse("2019-12-03"),
                 DateTimeUtil.parse("2019-12-04"));
@@ -130,6 +163,27 @@ class DobbyLogicTest {
                 result);
         assertEquals("> Dobby show 1 tasks:\n1. [E][ ] project meeting (from: Dec 03 2019, 09:00"
                 + " to: Dec 03 2019, 11:00)\n", logic.showTasks());
+    }
+
+    @Test
+    void createEvent_recurring_addsEventWithRecurrence() throws Exception {
+        String result = logic.createEvent("gym", DateTimeUtil.parse("2026-09-22 1000"),
+                DateTimeUtil.parse("2026-09-22 1100"), Recurrence.WEEK);
+
+        assertEquals("> Dobby noted a new Event: gym from Sep 22 2026, 10:00 to Sep 22 2026, 11:00, every week",
+                result);
+        assertEquals("> Dobby show 1 tasks:\n"
+                + "1. [E][ ] gym (from: Sep 22 2026, 10:00 to: Sep 22 2026, 11:00, every week)\n",
+                logic.showTasks());
+    }
+
+    @Test
+    void createEvent_endBeforeStart_rejectsEvent() throws Exception {
+        String result = logic.createEvent("reversed", DateTimeUtil.parse("2026-09-22 1600"),
+                DateTimeUtil.parse("2026-09-22 1400"));
+
+        assertEquals("> Dobby needs the event end to be at or after its start.", result);
+        assertEquals("> Dobby show 0 tasks:\n", logic.showTasks());
     }
 
     @Test

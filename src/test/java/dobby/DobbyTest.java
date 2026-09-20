@@ -14,10 +14,13 @@ import org.junit.jupiter.api.Test;
 
 /** Tests command handling through the UI-independent Dobby facade. */
 class DobbyTest {
-    private static final Path DATA_FILE = Path.of("data", "duke.txt");
+    private static final Path DATA_FILE = Path.of("data", "dobby.txt");
+    private static final Path LEGACY_DATA_FILE = Path.of("data", "duke.txt");
 
     private boolean hasOriginalDataFile;
     private byte[] originalData;
+    private boolean hasOriginalLegacyDataFile;
+    private byte[] originalLegacyData;
     private Dobby dobby;
 
     /** Saves existing task data and starts each test with no saved tasks. */
@@ -25,7 +28,10 @@ class DobbyTest {
     void setUp() throws IOException {
         hasOriginalDataFile = Files.exists(DATA_FILE);
         originalData = hasOriginalDataFile ? Files.readAllBytes(DATA_FILE) : null;
+        hasOriginalLegacyDataFile = Files.exists(LEGACY_DATA_FILE);
+        originalLegacyData = hasOriginalLegacyDataFile ? Files.readAllBytes(LEGACY_DATA_FILE) : null;
         Files.deleteIfExists(DATA_FILE);
+        Files.deleteIfExists(LEGACY_DATA_FILE);
         dobby = new Dobby();
     }
 
@@ -37,6 +43,12 @@ class DobbyTest {
             Files.write(DATA_FILE, originalData);
         } else {
             Files.deleteIfExists(DATA_FILE);
+        }
+        if (hasOriginalLegacyDataFile) {
+            Files.createDirectories(LEGACY_DATA_FILE.getParent());
+            Files.write(LEGACY_DATA_FILE, originalLegacyData);
+        } else {
+            Files.deleteIfExists(LEGACY_DATA_FILE);
         }
     }
 
