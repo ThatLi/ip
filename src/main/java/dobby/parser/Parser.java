@@ -13,6 +13,7 @@ import dobby.command.MarkCommand;
 import dobby.command.TodoCommand;
 import dobby.command.UnmarkCommand;
 import dobby.exception.DobbyException;
+import dobby.task.Recurrence;
 import dobby.util.DateTimeUtil;
 
 /** Converts every user input into an executable command object. */
@@ -84,12 +85,21 @@ public final class Parser {
      */
     private static Command deadline(String[] tokens) {
         int byIndex = marker(tokens, "/by", 1);
-        if (byIndex == -1 || byIndex == 1 || byIndex == tokens.length - 1) {
+        int everyIndex = marker(tokens, "/every", byIndex + 1);
+        int dateEndIndex = everyIndex == -1 ? tokens.length : everyIndex;
+        if (byIndex == -1 || byIndex == 1 || byIndex + 1 == dateEndIndex
+                || !hasValidRecurrenceSyntax(tokens, everyIndex)) {
             return invalid("> Dobby is confused. Dobby think you meant 'deadline <description> /by <date/time>'");
+        }
+        Recurrence recurrence;
+        try {
+            recurrence = parseRecurrence(tokens, everyIndex);
+        } catch (DobbyException e) {
+            return invalid(e.getMessage());
         }
         try {
             return new DeadlineCommand(join(tokens, 1, byIndex),
-                    DateTimeUtil.parse(join(tokens, byIndex + 1, tokens.length)));
+                    DateTimeUtil.parse(join(tokens, byIndex + 1, dateEndIndex)), recurrence);
         } catch (DobbyException e) {
             return invalid("> Dobby needs a valid date: yyyy-MM-dd, optionally followed by HHmm.");
         }
@@ -104,18 +114,40 @@ public final class Parser {
     private static Command event(String[] tokens) {
         int fromIndex = marker(tokens, "/from", 1);
         int toIndex = marker(tokens, "/to", fromIndex + 1);
+        int everyIndex = marker(tokens, "/every", toIndex + 1);
+        int endDateEndIndex = everyIndex == -1 ? tokens.length : everyIndex;
         if (fromIndex == -1 || toIndex == -1 || fromIndex == 1
-                || fromIndex + 1 == toIndex || toIndex == tokens.length - 1) {
+                || fromIndex + 1 == toIndex || toIndex + 1 == endDateEndIndex
+                || !hasValidRecurrenceSyntax(tokens, everyIndex)) {
             return invalid("> Dobby is confused. Dobby think you meant "
                     + "'event <description> /from <date/time> /to <date/time>'");
         }
+        Recurrence recurrence;
         try {
-            return new EventCommand(join(tokens, 1, fromIndex),
-                    DateTimeUtil.parse(join(tokens, fromIndex + 1, toIndex)),
-                    DateTimeUtil.parse(join(tokens, toIndex + 1, tokens.length)));
+            recurrence = parseRecurrence(tokens, everyIndex);
+        } catch (DobbyException e) {
+            return invalid(e.getMessage());
+        }
+        try {
+            DateTimeUtil.ParsedDateTime from = DateTimeUtil.parse(join(tokens, fromIndex + 1, toIndex));
+            DateTimeUtil.ParsedDateTime to = DateTimeUtil.parse(join(tokens, toIndex + 1, endDateEndIndex));
+            if (to.getValue().isBefore(from.getValue())) {
+                return invalid("> Dobby needs the event end to be at or after its start.");
+            }
+            return new EventCommand(join(tokens, 1, fromIndex), from, to, recurrence);
         } catch (DobbyException e) {
             return invalid("> Dobby needs valid dates: yyyy-MM-dd, optionally followed by HHmm.");
         }
+    }
+
+    /** Returns whether an optional recurrence marker has exactly one following interval. */
+    private static boolean hasValidRecurrenceSyntax(String[] tokens, int everyIndex) {
+        return everyIndex == -1 || everyIndex == tokens.length - 2;
+    }
+
+    /** Parses an optional recurrence marker and interval. */
+    private static Recurrence parseRecurrence(String[] tokens, int everyIndex) throws DobbyException {
+        return everyIndex == -1 ? Recurrence.NONE : Recurrence.parse(tokens[everyIndex + 1]);
     }
 
     private static InvalidCommand invalid(String message) {

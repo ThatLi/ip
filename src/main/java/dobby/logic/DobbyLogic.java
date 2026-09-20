@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 import dobby.storage.Storage;
 import dobby.task.Deadline;
 import dobby.task.Event;
+import dobby.task.Recurrence;
 import dobby.task.Task;
 import dobby.task.TaskList;
 import dobby.task.ToDo;
@@ -93,17 +94,51 @@ public final class DobbyLogic {
 
     /** Adds a deadline task and returns the result. */
     public String createDeadline(String description, DateTimeUtil.ParsedDateTime by) {
-        tasks.add(new Deadline(description, by.getValue(), by.hasTime()));
+        return createDeadline(description, by, Recurrence.NONE);
+    }
+
+    /**
+     * Adds a deadline task with an optional recurrence and returns the result.
+     *
+     * @param description deadline description
+     * @param by parsed due date and optional time
+     * @param recurrence interval at which the deadline repeats
+     * @return the result of creating and saving the deadline
+     */
+    public String createDeadline(String description, DateTimeUtil.ParsedDateTime by, Recurrence recurrence) {
+        tasks.add(new Deadline(description, by.getValue(), by.hasTime(), recurrence));
         return combineSaveStatus(saveTasks(), "> Dobby noted a new Deadline: " + description + " by "
-                + DateTimeUtil.formatForDisplay(by.getValue(), by.hasTime()));
+                + DateTimeUtil.formatForDisplay(by.getValue(), by.hasTime()) + formatRecurrence(recurrence));
     }
 
     /** Adds an event task and returns the result. */
     public String createEvent(String description, DateTimeUtil.ParsedDateTime from, DateTimeUtil.ParsedDateTime to) {
-        tasks.add(new Event(description, from.getValue(), from.hasTime(), to.getValue(), to.hasTime()));
+        return createEvent(description, from, to, Recurrence.NONE);
+    }
+
+    /**
+     * Adds an event task with an optional recurrence and returns the result.
+     *
+     * @param description event description
+     * @param from parsed start date and optional time
+     * @param to parsed end date and optional time
+     * @param recurrence interval at which the event repeats
+     * @return the result of validating, creating, and saving the event
+     */
+    public String createEvent(String description, DateTimeUtil.ParsedDateTime from, DateTimeUtil.ParsedDateTime to,
+                              Recurrence recurrence) {
+        if (to.getValue().isBefore(from.getValue())) {
+            return "> Dobby needs the event end to be at or after its start.";
+        }
+        tasks.add(new Event(description, from.getValue(), from.hasTime(), to.getValue(), to.hasTime(), recurrence));
         return combineSaveStatus(saveTasks(), "> Dobby noted a new Event: " + description + " from "
                 + DateTimeUtil.formatForDisplay(from.getValue(), from.hasTime()) + " to "
-                + DateTimeUtil.formatForDisplay(to.getValue(), to.hasTime()));
+                + DateTimeUtil.formatForDisplay(to.getValue(), to.hasTime()) + formatRecurrence(recurrence));
+    }
+
+    /** Formats a recurrence suffix for task-creation responses. */
+    private String formatRecurrence(Recurrence recurrence) {
+        return recurrence.isRecurring() ? ", every " + recurrence : "";
     }
 
     /** Saves tasks and returns an error message only if writing fails. */
