@@ -1,15 +1,16 @@
 # Level-6 UI test plan
 
-These tests cover creating the three supported task types, listing tasks, marking and unmarking a task, and saving and loading task-list changes through `data/duke.txt`.
+These tests cover creating the three supported task types, recurrence, event-order validation, listing tasks,
+marking and unmarking a task, and saving and loading task-list changes through `data/dobby.txt`.
 They also cover in-app command guidance and discovery after an unknown command.
 
 ## Create, list, mark, and unmark dated tasks
 
-**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; dates are reformatted for display; and `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/duke.txt` without changing the console output.
+**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; dates are reformatted for display; and `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/dobby.txt` without changing the console output.
 
 **Command:**
 ```text
-cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
+del /q data\dobby.txt data\duke.txt 2>nul & javac -d build\ui-test src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp build\ui-test dobby.Dobby
 ```
 
 **Input:**
@@ -82,13 +83,66 @@ Tell Dobby: ____________________________________________________________
 ____________________________________________________________
 ```
 
+## Create recurring tasks and reject a reversed event
+
+**Aim:** Confirm that monthly deadlines and weekly events retain recurrence, while a reversed event is rejected.
+
+**Command:**
+```text
+del /q data\dobby.txt data\duke.txt 2>nul & javac -d build\ui-test src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp build\ui-test dobby.Dobby
+```
+
+**Input:**
+```text
+deadline Pay rent /by 2026-10-01 /every month
+event Gym /from 2026-09-22 1000 /to 2026-09-22 1100 /every week
+event reversed /from 2026-09-22 1600 /to 2026-09-22 1400
+list
+bye
+```
+
+**Expected output:**
+```text
+____________________________________________________________
+       *       .       *       .       *       
+   .      ____        _     _              .   
+     *   |  _ \  ___ | |__ | |__  _   _     * 
+   .     | | | |/ _ \| '_ \| '_ \| | | |   . 
+     *   | |_| | (_) | |_) | |_) | |_| |     * 
+   .     |____/ \___/|_.__/|_.__/ \__, |   . 
+                                  |___/        
+       *       .       *       .       *       
+
+> Dobby says hi!
+> Dobby is ready to take orders.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby noted a new Deadline: Pay rent by Oct 01 2026, every month
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby noted a new Event: Gym from Sep 22 2026, 10:00 to Sep 22 2026, 11:00, every week
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby needs the event end to be at or after its start.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby show 2 tasks:
+1. [D][ ] Pay rent (by: Oct 01 2026, every month)
+2. [E][ ] Gym (from: Sep 22 2026, 10:00 to: Sep 22 2026, 11:00, every week)
+
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby says goodbye to master!
+____________________________________________________________
+```
+
 ## Show help and suggest it after an unknown command
 
 **Aim:** Confirm that `help` lists every supported command and date format without changing task state, and that an unknown command directs the user to help.
 
 **Command:**
 ```text
-cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
+del /q data\dobby.txt data\duke.txt 2>nul & javac -d build\ui-test src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp build\ui-test dobby.Dobby
 ```
 
 **Input:**
@@ -122,8 +176,8 @@ Tell Dobby: ____________________________________________________________
 > Dobby can help with these commands:
 Create tasks:
   todo <description> - Add a todo task.
-  deadline <description> /by <date/time> - Add a task with a deadline.
-  event <description> /from <date/time> /to <date/time> - Add an event.
+  deadline <description> /by <date/time> [/every <interval>] - Add a deadline.
+  event <description> /from <date/time> /to <date/time> [/every <interval>] - Add an event.
 View tasks:
   list - Show all tasks.
   find <search text> - Show tasks matching text.
@@ -135,6 +189,7 @@ Other:
   help - Show this help page.
   bye - Exit Dobby.
 Dates: use yyyy-MM-dd or d/M/yyyy. Times are optional; use HHmm or HH:mm.
+Recurrence: optionally use /every day, week, month, or year.
 Example: deadline return book /by 2019-12-02 1800
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
@@ -157,7 +212,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\duke.txt & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
+(echo T ^| 0 ^| recovered task&echo invalid saved task)>data\dobby.txt & javac -d build\ui-test src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp build\ui-test dobby.Dobby
 ```
 
 **Input:**
@@ -198,7 +253,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-cmd /c "if exist data\duke.txt del /q data\duke.txt" & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
+del /q data\dobby.txt data\duke.txt 2>nul & javac -d build\ui-test src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp build\ui-test dobby.Dobby
 ```
 
 **Input:**
@@ -256,7 +311,7 @@ ____________________________________________________________
 
 **Command:**
 ```text
-(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\duke.txt & javac -d out\production\ip src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp out\production\ip dobby.Dobby
+(echo T ^| 0 ^| read book&echo D ^| 1 ^| return book ^| 2019-12-02 1800&echo E ^| 0 ^| project meeting ^| 2019-12-03 0900 ^| 2019-12-03 1100)>data\dobby.txt & javac -d build\ui-test src\main\java\dobby\Dobby.java src\main\java\dobby\command\*.java src\main\java\dobby\exception\*.java src\main\java\dobby\logic\*.java src\main\java\dobby\parser\*.java src\main\java\dobby\storage\*.java src\main\java\dobby\task\*.java src\main\java\dobby\ui\cli\*.java src\main\java\dobby\util\*.java && java -cp build\ui-test dobby.Dobby
 ```
 
 **Input:**
