@@ -48,5 +48,3 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
   [Dobby 2](https://commons.wikimedia.org/wiki/File:Dobby_2.jpg), a photograph by
   [NobbiP](https://commons.wikimedia.org/wiki/User:NobbiP), licensed under
   [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
-- `DaUser.png` is reused from the
-  [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart2.html).
