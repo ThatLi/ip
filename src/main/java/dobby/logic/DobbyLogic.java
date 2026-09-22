@@ -68,9 +68,15 @@ public final class DobbyLogic {
         }
         Task task = tasks.get(taskNumber - 1);
         if (isDone) {
+            if (task.isDone()) {
+                return "> Dobby sees that the task is already marked.";
+            }
             task.markDone();
             return combineSaveStatus(saveTasks(), "> Dobby will mark this as done!\n   " + task);
         } else {
+            if (!task.isDone()) {
+                return "> Dobby sees that the task is already unmarked.";
+            }
             task.markNotDone();
             return combineSaveStatus(saveTasks(), "> Dobby will mark this as not done!\n   " + task);
         }

@@ -1,12 +1,15 @@
 # Level-6 UI test plan
 
 These tests cover creating the three supported task types, recurrence, event-order validation, listing tasks,
-marking and unmarking a task, and saving and loading task-list changes through `data/dobby.txt`.
+marking and unmarking a task, detecting repeated status changes, and saving and loading task-list changes
+through `data/dobby.txt`.
 They also cover in-app command guidance and discovery after an unknown command.
 
 ## Create, list, mark, and unmark dated tasks
 
-**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; dates are reformatted for display; and `mark` and `unmark` change a task's status. Each successful change also saves the task list to `data/dobby.txt` without changing the console output.
+**Aim:** Confirm that todo, deadline, and event commands create correctly typed tasks; dates are reformatted for
+display; `mark` and `unmark` change a task's status; and repeated status changes are reported without changing it.
+Each successful change also saves the task list to `data/dobby.txt` without changing the console output.
 
 **Command:**
 ```text
@@ -21,6 +24,8 @@ event project meeting /from 2019-12-03 0900 /to 2019-12-03 1100
 list
 find book
 mark 2
+mark 2
+unmark 2
 unmark 2
 list
 bye
@@ -68,8 +73,14 @@ Tell Dobby: ____________________________________________________________
    [D][X] return book (by: Dec 02 2019, 18:00)
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
+> Dobby sees that the task is already marked.
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
 > Dobby will mark this as not done!
    [D][ ] return book (by: Dec 02 2019, 18:00)
+____________________________________________________________
+Tell Dobby: ____________________________________________________________
+> Dobby sees that the task is already unmarked.
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
 > Dobby show 3 tasks:

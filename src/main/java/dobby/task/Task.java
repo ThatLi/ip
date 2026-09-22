@@ -64,6 +64,11 @@ public class Task {
         this.isDone = false;
     }
 
+    /** Returns whether this task is completed. */
+    public boolean isDone() {
+        return isDone;
+    }
+
     /**
      * Returns the icon representing this task's completion status.
      *

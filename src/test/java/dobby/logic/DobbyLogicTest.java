@@ -208,6 +208,27 @@ class DobbyLogicTest {
     }
 
     @Test
+    void changeTaskStatus_markMarkedTask_reportsAlreadyMarked() {
+        logic.createToDo("read book");
+        logic.changeTaskStatus(1, true);
+
+        String result = logic.changeTaskStatus(1, true);
+
+        assertEquals("> Dobby sees that the task is already marked.", result);
+        assertEquals("> Dobby show 1 tasks:\n1. [T][X] read book\n", logic.showTasks());
+    }
+
+    @Test
+    void changeTaskStatus_unmarkUnmarkedTask_reportsAlreadyUnmarked() {
+        logic.createToDo("read book");
+
+        String result = logic.changeTaskStatus(1, false);
+
+        assertEquals("> Dobby sees that the task is already unmarked.", result);
+        assertEquals("> Dobby show 1 tasks:\n1. [T][ ] read book\n", logic.showTasks());
+    }
+
+    @Test
     void changeTaskStatus_invalidIndex_errorAndTasksUnchanged() {
         logic.createToDo("read book");
 
