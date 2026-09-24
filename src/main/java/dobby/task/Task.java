@@ -19,13 +19,9 @@ public class Task {
     private static final int TODO_FIELD_COUNT = 3;
     private static final int DEADLINE_FIELD_COUNT = 4;
     private static final int EVENT_FIELD_COUNT = 5;
-    private static final int RECURRING_DEADLINE_FIELD_COUNT = 5;
-    private static final int RECURRING_EVENT_FIELD_COUNT = 6;
     private static final int DEADLINE_DATE_FIELD = 3;
     private static final int EVENT_START_DATE_FIELD = 3;
     private static final int EVENT_END_DATE_FIELD = 4;
-    private static final int DEADLINE_RECURRENCE_FIELD = 4;
-    private static final int EVENT_RECURRENCE_FIELD = 5;
 
     private final String description;
     private final String type;
@@ -158,21 +154,16 @@ public class Task {
 
     /** Creates a deadline from validated common fields. */
     private static Task createDeadline(String[] fields, String line) throws DobbyException {
-        if ((fields.length != DEADLINE_FIELD_COUNT && fields.length != RECURRING_DEADLINE_FIELD_COUNT)
-                || fields[DEADLINE_DATE_FIELD].isBlank()) {
+        if (fields.length != DEADLINE_FIELD_COUNT || fields[DEADLINE_DATE_FIELD].isBlank()) {
             throw new DobbyException("Invalid saved deadline: " + line);
         }
         DateTimeUtil.ParsedDateTime deadlineDateTime = parseSavedDate(fields[DEADLINE_DATE_FIELD], line);
-        Recurrence recurrence = fields.length == RECURRING_DEADLINE_FIELD_COUNT
-                ? parseSavedRecurrence(fields[DEADLINE_RECURRENCE_FIELD], line) : Recurrence.NONE;
-        return new Deadline(fields[DESCRIPTION_FIELD], deadlineDateTime.getValue(), deadlineDateTime.hasTime(),
-                recurrence);
+        return new Deadline(fields[DESCRIPTION_FIELD], deadlineDateTime.getValue(), deadlineDateTime.hasTime());
     }
 
     /** Creates an event from validated common fields. */
     private static Task createEvent(String[] fields, String line) throws DobbyException {
-        if ((fields.length != EVENT_FIELD_COUNT && fields.length != RECURRING_EVENT_FIELD_COUNT)
-                || fields[EVENT_START_DATE_FIELD].isBlank()
+        if (fields.length != EVENT_FIELD_COUNT || fields[EVENT_START_DATE_FIELD].isBlank()
                 || fields[EVENT_END_DATE_FIELD].isBlank()) {
             throw new DobbyException("Invalid saved event: " + line);
         }
@@ -181,23 +172,8 @@ public class Task {
         if (endDateTime.getValue().isBefore(startDateTime.getValue())) {
             throw new DobbyException("Invalid saved event order: " + line);
         }
-        Recurrence recurrence = fields.length == RECURRING_EVENT_FIELD_COUNT
-                ? parseSavedRecurrence(fields[EVENT_RECURRENCE_FIELD], line) : Recurrence.NONE;
         return new Event(fields[DESCRIPTION_FIELD], startDateTime.getValue(), startDateTime.hasTime(),
-                endDateTime.getValue(), endDateTime.hasTime(), recurrence);
-    }
-
-    /** Parses a recurrence from saved data while preserving the context of an invalid record. */
-    private static Recurrence parseSavedRecurrence(String recurrenceText, String line) throws DobbyException {
-        try {
-            Recurrence recurrence = Recurrence.parse(recurrenceText);
-            if (!recurrence.isRecurring()) {
-                throw new DobbyException("A saved recurrence cannot be empty");
-            }
-            return recurrence;
-        } catch (DobbyException e) {
-            throw new DobbyException("Invalid saved recurrence: " + line, e);
-        }
+                endDateTime.getValue(), endDateTime.hasTime());
     }
 
     /** Parses a date from saved data while preserving the context of the invalid record. */

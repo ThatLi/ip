@@ -77,11 +77,6 @@ class ParserTest {
     }
 
     @Test
-    void parse_recurringDeadline_returnsDeadlineCommand() {
-        assertInstanceOf(DeadlineCommand.class, Parser.parse("deadline pay rent /by 2026-10-01 /every month"));
-    }
-
-    @Test
     void parse_deadlineWithMissingParts_returnsHelpfulError() {
         assertInvalidMessage("deadline return book", "> Dobby is confused. Dobby think you meant "
                 + "'deadline <description> /by <date/time>'");
@@ -100,21 +95,9 @@ class ParserTest {
     }
 
     @Test
-    void parse_recurringEvent_returnsEventCommand() {
-        assertInstanceOf(EventCommand.class,
-                Parser.parse("event gym /from 2026-09-22 1000 /to 2026-09-22 1100 /every week"));
-    }
-
-    @Test
     void parse_eventEndingBeforeStart_returnsHelpfulError() {
         assertInvalidMessage("event reversed /from 2026-09-22 1600 /to 2026-09-22 1400",
                 "> Dobby needs the event end to be at or after its start.");
-    }
-
-    @Test
-    void parse_unsupportedRecurrence_returnsHelpfulError() {
-        assertInvalidMessage("deadline pay rent /by 2026-10-01 /every fortnight",
-                "> Dobby needs a recurrence of day, week, month, or year.");
     }
 
     @Test

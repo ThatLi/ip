@@ -1,6 +1,6 @@
 # Level-6 UI test plan
 
-These tests cover creating the three supported task types, recurrence, event-order validation, listing tasks,
+These tests cover creating the three supported task types, event-order validation, listing tasks,
 marking and unmarking a task, detecting repeated status changes, and saving and loading task-list changes
 through `data/dobby.txt`.
 They also cover in-app command guidance and discovery after an unknown command.
@@ -94,9 +94,9 @@ Tell Dobby: ____________________________________________________________
 ____________________________________________________________
 ```
 
-## Create recurring tasks and reject a reversed event
+## Reject an event whose end precedes its start
 
-**Aim:** Confirm that monthly deadlines and weekly events retain recurrence, while a reversed event is rejected.
+**Aim:** Confirm that a reversed event is rejected without adding a task.
 
 **Command:**
 ```text
@@ -105,8 +105,6 @@ del /q data\dobby.txt data\duke.txt 2>nul & javac -d build\ui-test src\main\java
 
 **Input:**
 ```text
-deadline Pay rent /by 2026-10-01 /every month
-event Gym /from 2026-09-22 1000 /to 2026-09-22 1100 /every week
 event reversed /from 2026-09-22 1600 /to 2026-09-22 1400
 list
 bye
@@ -128,18 +126,10 @@ ____________________________________________________________
 > Dobby is ready to take orders.
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
-> Dobby noted a new Deadline: Pay rent by Oct 01 2026, every month
-____________________________________________________________
-Tell Dobby: ____________________________________________________________
-> Dobby noted a new Event: Gym from Sep 22 2026, 10:00 to Sep 22 2026, 11:00, every week
-____________________________________________________________
-Tell Dobby: ____________________________________________________________
 > Dobby needs the event end to be at or after its start.
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
-> Dobby show 2 tasks:
-1. [D][ ] Pay rent (by: Oct 01 2026, every month)
-2. [E][ ] Gym (from: Sep 22 2026, 10:00 to: Sep 22 2026, 11:00, every week)
+> Dobby show 0 tasks:
 
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________
@@ -187,8 +177,8 @@ Tell Dobby: ____________________________________________________________
 > Dobby can help with these commands:
 Create tasks:
   todo <description> - Add a todo task.
-  deadline <description> /by <date/time> [/every <interval>] - Add a deadline.
-  event <description> /from <date/time> /to <date/time> [/every <interval>] - Add an event.
+  deadline <description> /by <date/time> - Add a task with a deadline.
+  event <description> /from <date/time> /to <date/time> - Add an event.
 View tasks:
   list - Show all tasks.
   find <search text> - Show tasks matching text.
@@ -200,7 +190,6 @@ Other:
   help - Show this help page.
   bye - Exit Dobby.
 Dates: use yyyy-MM-dd or d/M/yyyy. Times are optional; use HHmm or HH:mm.
-Recurrence: optionally use /every day, week, month, or year.
 Example: deadline return book /by 2019-12-02 1800
 ____________________________________________________________
 Tell Dobby: ____________________________________________________________

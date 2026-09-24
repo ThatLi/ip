@@ -51,23 +51,6 @@ class TaskTest {
     }
 
     @Test
-    void fromFileString_recurringDeadline_restoresRecurrence() throws DobbyException {
-        Task task = Task.fromFileString("D | 0 | pay rent | 2026-10-01 | month");
-
-        assertEquals("[D][ ] pay rent (by: Oct 01 2026, every month)", task.toString());
-        assertEquals("D | 0 | pay rent | 2026-10-01 | month", task.toFileString());
-    }
-
-    @Test
-    void fromFileString_recurringEvent_restoresRecurrence() throws DobbyException {
-        Task task = Task.fromFileString("E | 0 | gym | 2026-09-22 1000 | 2026-09-22 1100 | week");
-
-        assertEquals("[E][ ] gym (from: Sep 22 2026, 10:00 to: Sep 22 2026, 11:00, every week)",
-                task.toString());
-        assertEquals("E | 0 | gym | 2026-09-22 1000 | 2026-09-22 1100 | week", task.toFileString());
-    }
-
-    @Test
     void fromFileString_eventEndingBeforeStart_exceptionThrown() {
         String record = "E | 0 | reversed | 2026-09-22 1600 | 2026-09-22 1400";
 

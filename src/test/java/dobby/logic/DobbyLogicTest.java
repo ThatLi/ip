@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import dobby.task.Recurrence;
 import dobby.util.DateTimeUtil;
 
 /** Tests task deletion through {@link DobbyLogic}. */
@@ -136,15 +135,6 @@ class DobbyLogicTest {
     }
 
     @Test
-    void createDeadline_recurring_addsDeadlineWithRecurrence() throws Exception {
-        String result = logic.createDeadline("pay rent", DateTimeUtil.parse("2026-10-01"), Recurrence.MONTH);
-
-        assertEquals("> Dobby noted a new Deadline: pay rent by Oct 01 2026, every month", result);
-        assertEquals("> Dobby show 1 tasks:\n1. [D][ ] pay rent (by: Oct 01 2026, every month)\n",
-                logic.showTasks());
-    }
-
-    @Test
     void createEvent_dateOnly_addsEventWithDateDisplay() throws Exception {
         String result = logic.createEvent("project meeting", DateTimeUtil.parse("2019-12-03"),
                 DateTimeUtil.parse("2019-12-04"));
@@ -163,18 +153,6 @@ class DobbyLogicTest {
                 result);
         assertEquals("> Dobby show 1 tasks:\n1. [E][ ] project meeting (from: Dec 03 2019, 09:00"
                 + " to: Dec 03 2019, 11:00)\n", logic.showTasks());
-    }
-
-    @Test
-    void createEvent_recurring_addsEventWithRecurrence() throws Exception {
-        String result = logic.createEvent("gym", DateTimeUtil.parse("2026-09-22 1000"),
-                DateTimeUtil.parse("2026-09-22 1100"), Recurrence.WEEK);
-
-        assertEquals("> Dobby noted a new Event: gym from Sep 22 2026, 10:00 to Sep 22 2026, 11:00, every week",
-                result);
-        assertEquals("> Dobby show 1 tasks:\n"
-                + "1. [E][ ] gym (from: Sep 22 2026, 10:00 to: Sep 22 2026, 11:00, every week)\n",
-                logic.showTasks());
     }
 
     @Test

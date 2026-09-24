@@ -70,8 +70,8 @@ class DobbyTest {
         assertEquals("> Dobby can help with these commands:\n"
                 + "Create tasks:\n"
                 + "  todo <description> - Add a todo task.\n"
-                + "  deadline <description> /by <date/time> [/every <interval>] - Add a deadline.\n"
-                + "  event <description> /from <date/time> /to <date/time> [/every <interval>] - Add an event.\n"
+                + "  deadline <description> /by <date/time> - Add a task with a deadline.\n"
+                + "  event <description> /from <date/time> /to <date/time> - Add an event.\n"
                 + "View tasks:\n"
                 + "  list - Show all tasks.\n"
                 + "  find <search text> - Show tasks matching text.\n"
@@ -83,7 +83,6 @@ class DobbyTest {
                 + "  help - Show this help page.\n"
                 + "  bye - Exit Dobby.\n"
                 + "Dates: use yyyy-MM-dd or d/M/yyyy. Times are optional; use HHmm or HH:mm.\n"
-                + "Recurrence: optionally use /every day, week, month, or year.\n"
                 + "Example: deadline return book /by 2019-12-02 1800", dobby.getResponse("help"));
         assertEquals("> Dobby show 1 tasks:\n1. [T][ ] read book\n", dobby.getResponse("list"));
     }
